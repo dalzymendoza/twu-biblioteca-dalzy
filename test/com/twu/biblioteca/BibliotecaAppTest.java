@@ -7,6 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.event.KeyEvent;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.Year;
@@ -16,30 +18,45 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class BibliotecaAppTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
+
 
     @Before
-    public void setUpStreams() {
+    public void setOutStream() {
         System.setOut(new PrintStream(outContent));
     }
 
     @After
     public void restoreStreams() {
-        System.setOut(originalOut);
+        System.setIn(System.in);
+        System.setOut(System.out);
     }
 
     @Test
     public void correct_welcome_message() {
-        BibliotecaApp.main(new String[0]);
+        BookRepository bookRepository = mock(BookRepository.class);
+        BibliotecaApp app = new BibliotecaApp(bookRepository);
+        app.printStartScreen();
         assertThat(outContent.toString(),
                 containsString(BibliotecaApp.WELCOME_MESSAGE));
+    }
+
+    private void setInStream(String inContent) {
+        ByteArrayInputStream inStream = new ByteArrayInputStream(inContent.getBytes());
+        System.setIn(inStream);
+    }
+
+    @Test
+    public void access_main_menu_through_pressing_m_from_start_screen() {
+        BookRepository bookRepository = mock(BookRepository.class);
+        BibliotecaApp app = new BibliotecaApp(bookRepository);
+        BibliotecaApp spyApp = spy(app);
+        spyApp.selectOption("M");
+        verify(spyApp).view_main_menu();
     }
 
     @Test
