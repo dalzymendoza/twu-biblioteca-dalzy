@@ -14,7 +14,6 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
@@ -44,10 +43,10 @@ public class BibliotecaAppTest {
                 containsString(BibliotecaApp.WELCOME_MESSAGE));
     }
 
-    private void setInStream(String inContent) {
-        ByteArrayInputStream inStream = new ByteArrayInputStream(inContent.getBytes());
-        System.setIn(inStream);
-    }
+//    private void setInStream(String inContent) {
+//        ByteArrayInputStream inStream = new ByteArrayInputStream(inContent.getBytes());
+//        System.setIn(inStream);
+//    }
 
 //    @Test
 //    public void access_main_menu_by_pressing_M_from_start_screen() {
@@ -99,9 +98,9 @@ public class BibliotecaAppTest {
 
     private List<Book> generateTestListOf3Books() {
         List<Book> listOfBooks = new ArrayList<Book>();
-        listOfBooks.add(new Book("A Brief History of Time", "Stephen Hawking", Year.of(1988)));
-        listOfBooks.add(new Book("The Lion, the Witch and the Wardrobe", "C.S. Lewis", Year.of(1950)));
-        listOfBooks.add(new Book("Your Dream Life Starts Here", "Kristina Karlsson", Year.of(2018)));
+        listOfBooks.add(new Book(1, "A Brief History of Time", "Stephen Hawking", Year.of(1988)));
+        listOfBooks.add(new Book(2, "The Lion, the Witch and the Wardrobe", "C.S. Lewis", Year.of(1950)));
+        listOfBooks.add(new Book(3, "Your Dream Life Starts Here", "Kristina Karlsson", Year.of(2018)));
         return listOfBooks;
     }
 
