@@ -61,11 +61,11 @@ public class BibliotecaAppTest {
         BibliotecaApp app = new BibliotecaApp(bookRepository);
 
         app.viewAllBooks();
-        String expectedOutput = "";
+        String actualOutput = outContent.toString();
         for (Book book : testListOf3Books) {
-            expectedOutput += book.getTitle() + "\n";
+            assertThat(actualOutput, containsString(book.getTitle()));
         }
-        assertThat(outContent.toString(), containsString(expectedOutput));
+
     }
 
     private List<Book> generateTestListOf3Books() {
