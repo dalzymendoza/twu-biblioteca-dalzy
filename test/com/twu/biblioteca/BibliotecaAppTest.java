@@ -7,7 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -40,7 +39,7 @@ public class BibliotecaAppTest {
     public void correct_welcome_message() {
         BookRepository bookRepository = mock(BookRepository.class);
         BibliotecaApp app = new BibliotecaApp(bookRepository);
-        app.printStartScreen();
+        app.displayStartScreen();
         assertThat(outContent.toString(),
                 containsString(BibliotecaApp.WELCOME_MESSAGE));
     }
@@ -50,14 +49,27 @@ public class BibliotecaAppTest {
         System.setIn(inStream);
     }
 
-    @Test
-    public void access_main_menu_through_pressing_m_from_start_screen() {
-        BookRepository bookRepository = mock(BookRepository.class);
-        BibliotecaApp app = new BibliotecaApp(bookRepository);
-        BibliotecaApp spyApp = spy(app);
-        spyApp.selectOption("M");
-        verify(spyApp).view_main_menu();
-    }
+//    @Test
+//    public void access_main_menu_by_pressing_M_from_start_screen() {
+//        BookRepository bookRepository = mock(BookRepository.class);
+//        BibliotecaApp app = new BibliotecaApp(bookRepository);
+//        BibliotecaApp spyApp = spy(app);
+//        setInStream("M B Q");
+//        spyApp.run();
+//        verify(spyApp).openMainMenuScreen();
+//    }
+//
+//    @Test
+//    public void access_list_of_books_by_pressing_V_from_main_menu() {
+//        BookRepository bookRepository = mock(BookRepository.class);
+//        List<Book> testListOf3Books = generateTestListOf3Books();
+//        when(bookRepository.viewAllBooks()).thenReturn(testListOf3Books);
+//        BibliotecaApp app = new BibliotecaApp(bookRepository);
+//        BibliotecaApp spyApp = spy(app);
+//        setInStream("M V B Q");
+//        spyApp.run();
+//        verify(spyApp).displayAllBooks();
+//    }
 
     @Test
     public void view_empty_list_of_books() {
@@ -65,7 +77,7 @@ public class BibliotecaAppTest {
         when(bookRepository.viewAllBooks()).thenReturn(new ArrayList<Book>());
         BibliotecaApp app = new BibliotecaApp(bookRepository);
 
-        app.viewAllBooks();
+        app.displayAllBooks();
         assertThat(outContent.toString(),
                 containsString(BibliotecaApp.NO_BOOKS_MESSAGE));
     }
@@ -77,7 +89,7 @@ public class BibliotecaAppTest {
         when(bookRepository.viewAllBooks()).thenReturn(testListOf3Books);
         BibliotecaApp app = new BibliotecaApp(bookRepository);
 
-        app.viewAllBooks();
+        app.displayAllBooks();
         String actualOutput = outContent.toString();
         for (Book book : testListOf3Books) {
             assertThat(actualOutput, containsString(book.getTitle()));
