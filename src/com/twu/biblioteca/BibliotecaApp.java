@@ -146,6 +146,7 @@ public class BibliotecaApp {
         try {
             Book book = bookRepository.getBook(id);
             printHeader(book.getTitle());
+            System.out.print(book.getAuthorAndYearPrintFormat());
         }
         catch(NonexistingBookError e) {
             System.out.print(NO_OPTION_ERROR);

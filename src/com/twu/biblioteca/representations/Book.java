@@ -25,6 +25,10 @@ public class Book {
         return title;
     }
 
+    public String getAuthorAndYearPrintFormat() {
+        return "Author: " + author + "\n" + "Year: " + yearOfPublishing.toString() + "\n";
+    }
+
     public String getBookOptionPrintFormat() {
         return "[" + id + "] " + title;
     }
