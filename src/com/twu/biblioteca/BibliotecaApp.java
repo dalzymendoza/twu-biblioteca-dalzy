@@ -48,7 +48,7 @@ public class BibliotecaApp {
         this.bookRepository = bookRepository;
         assertNotNull(bookRepository);
         this.checkoutService = new CheckoutService(bookRepository);
-        this.returnService = new ReturnService(bookRepository);
+        this.returnService = new ReturnService(this, bookRepository);
         scanner = new Scanner(System.in);
         setStartScreenOptions();
         setMainMenuOptions();
@@ -151,8 +151,7 @@ public class BibliotecaApp {
     }
 
     private void openReturnBookScreen() {
-
-
+        returnService.openReturnScreen();
     }
 
     private void printOptions(List<Option> options) {

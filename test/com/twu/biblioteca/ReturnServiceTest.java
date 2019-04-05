@@ -40,7 +40,8 @@ public class ReturnServiceTest {
     @Test
     public void returnCheckedOutBookUsingCorrectId() {
         BookRepository bookRepository = mock(BookRepository.class);
-        ReturnService service = new ReturnService(bookRepository);
+        BibliotecaApp app = mock(BibliotecaApp.class);
+        ReturnService service = new ReturnService(app, bookRepository);
         service.returnBook(1);
         assertThat(outContent.toString(), containsString(ReturnService.SUCCESSFUL_MSG));
     }
@@ -48,8 +49,9 @@ public class ReturnServiceTest {
     @Test
     public void returnCheckedOutBookUsingIncorrectId() throws NonexistingBookError, AvailableBookError {
         BookRepository bookRepository = mock(BookRepository.class);
+        BibliotecaApp app = mock(BibliotecaApp.class);
         doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
-        ReturnService service = new ReturnService(bookRepository);
+        ReturnService service = new ReturnService(app, bookRepository);
         service.returnBook(1);
         assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
     }
@@ -57,8 +59,9 @@ public class ReturnServiceTest {
     @Test
     public void returnBookNotCheckedOut() throws NonexistingBookError, AvailableBookError {
         BookRepository bookRepository = mock(BookRepository.class);
+        BibliotecaApp app = mock(BibliotecaApp.class);
         doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
-        ReturnService service = new ReturnService(bookRepository);
+        ReturnService service = new ReturnService(app, bookRepository);
         service.returnBook(1);
         assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
     }
