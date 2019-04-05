@@ -24,6 +24,10 @@ public class Book {
         return title;
     }
 
+    public String getBookOptionPrintFormat() {
+        return "[" + id + "] " + title;
+    }
+
     public boolean getAvailability() {
         return availability;
     }

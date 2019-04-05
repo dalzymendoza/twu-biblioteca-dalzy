@@ -20,7 +20,7 @@ public class SampleBookRepository extends BookRepository {
 
     @Override
     public List<Book> viewAllBooks() {
-        return (List<Book>) books.values();
+        return new ArrayList<>(books.values());
     }
 
     @Override
@@ -31,5 +31,13 @@ public class SampleBookRepository extends BookRepository {
         else {
             throw new NonexistingBookError();
         }
+    }
+
+    @Override
+    public Book getBook(int id) throws NonexistingBookError {
+        if (books.containsKey(id)) {
+            return books.get(id);
+        }
+        throw new NonexistingBookError();
     }
 }

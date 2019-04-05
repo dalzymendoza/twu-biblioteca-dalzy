@@ -10,5 +10,6 @@ public abstract class BookRepository {
 
     public abstract List<Book> viewAllBooks();
     public abstract void checkoutBook(int id)  throws NonexistingBookError, UnavailableBookError;
+    public abstract Book getBook(int id) throws NonexistingBookError;
 }
 

@@ -6,11 +6,13 @@ public class Option {
     private String code;
     private String optionTitle;
     private String methodName;
+    private Class[] parameterTypes;
 
-    public Option(String code, String optionTitle, String methodName) {
+    public Option(String code, String optionTitle, String methodName, Class[] parameterTypes) {
         this.code = code;
         this.optionTitle = optionTitle;
         this.methodName = methodName;
+        this.parameterTypes = parameterTypes;
     }
 
     public String getCode() {
@@ -23,6 +25,10 @@ public class Option {
 
     public String getMethodName() {
         return methodName;
+    }
+
+    public Class[] getParameterTypes() {
+        return parameterTypes;
     }
 
     public String getOptionPrintFormat() {
