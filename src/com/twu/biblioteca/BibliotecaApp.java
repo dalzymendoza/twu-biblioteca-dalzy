@@ -18,7 +18,7 @@ public class BibliotecaApp {
 
     public static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\n";
     public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any books at the moment.\n";
-    private static final String NO_OPTION_ERROR = "Invalid option selected";
+    public static final String NO_OPTION_ERROR = "Invalid option selected";
     private static final int HEADER_WIDTH = 50;
     public static final String RESPONSE_MARKER = "**";
     private static final String LIBRARY_NAME = "BIBLIOTECA";
@@ -26,7 +26,7 @@ public class BibliotecaApp {
     private static final String BOOKS = "BOOKS";
 
     private static final String QUIT_APP_CODE = "Q";
-    private static final String BACK_CODE = "B";
+    public static final String BACK_CODE = "B";
 
     private BookRepository bookRepository;
     private CheckoutService checkoutService;
@@ -47,8 +47,8 @@ public class BibliotecaApp {
         this.bookRepository = bookRepository;
         assertNotNull(bookRepository);
         this.checkoutService = new CheckoutService(bookRepository);
-        this.returnService = new ReturnService(this, bookRepository);
         scanner = new Scanner(System.in);
+        this.returnService = new ReturnService(this, bookRepository, scanner);
         setStartScreenOptions();
         setMainMenuOptions();
         setViewAllBooksOptions();
@@ -64,7 +64,7 @@ public class BibliotecaApp {
     private void setMainMenuOptions() {
         mainMenuOptions = new ArrayList<>();
         mainMenuOptions.add(new Option("V", "View All Books", "openViewAllBooksScreen", new Class[0]));
-        mainMenuOptions.add(new Option("R", "Return a Book", "returnBook", new Class[0]));
+        mainMenuOptions.add(new Option("R", "Return a Book", "openReturnBookScreen", new Class[0]));
         mainMenuOptions.add(new Option(BACK_CODE, "Go back to Start Screen", "run", new Class[0]));
     }
 
@@ -177,13 +177,13 @@ public class BibliotecaApp {
         }
     }
 
-    private void printOptions(List<Option> options) {
+    public void printOptions(List<Option> options) {
         for (Option option : options) {
             System.out.println(option.getOptionPrintFormat());
         }
     }
 
-    public void selectOption(String optionString, List<Option> options, Object[] params)
+    private void selectOption(String optionString, List<Option> options, Object[] params)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         for (Option option : options) {
             if (optionString.toLowerCase().equals(option.getCode().toLowerCase())) {

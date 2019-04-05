@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
+import java.util.Scanner;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,7 +42,7 @@ public class ReturnServiceTest {
     public void returnCheckedOutBookUsingCorrectId() {
         BookRepository bookRepository = mock(BookRepository.class);
         BibliotecaApp app = mock(BibliotecaApp.class);
-        ReturnService service = new ReturnService(app, bookRepository);
+        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
         service.returnBook(1);
         assertThat(outContent.toString(), containsString(ReturnService.SUCCESSFUL_MSG));
     }
@@ -51,7 +52,7 @@ public class ReturnServiceTest {
         BookRepository bookRepository = mock(BookRepository.class);
         BibliotecaApp app = mock(BibliotecaApp.class);
         doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
-        ReturnService service = new ReturnService(app, bookRepository);
+        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
         service.returnBook(1);
         assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
     }
@@ -61,7 +62,7 @@ public class ReturnServiceTest {
         BookRepository bookRepository = mock(BookRepository.class);
         BibliotecaApp app = mock(BibliotecaApp.class);
         doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
-        ReturnService service = new ReturnService(app, bookRepository);
+        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
         service.returnBook(1);
         assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
     }
