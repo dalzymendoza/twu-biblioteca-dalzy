@@ -122,7 +122,9 @@ public class BibliotecaApp {
             return;
         }
         for (Book book : books){
-            System.out.println(book.getBookOptionPrintFormat());
+            if (book.getAvailability()) {
+                System.out.println(book.getBookOptionPrintFormat());
+            }
         }
     }
 
@@ -141,6 +143,7 @@ public class BibliotecaApp {
 
     private void checkoutBook(Integer id) {
         checkoutService.checkoutBook(id);
+        openViewAllBooksScreen();
     }
 
     private void printOptions(List<Option> options) {

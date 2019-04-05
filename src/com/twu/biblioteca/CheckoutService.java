@@ -8,9 +8,9 @@ import javax.swing.plaf.synth.SynthColorChooserUI;
 
 public class CheckoutService {
 
-    public static final String UNAVAILABLE_MSG = "Sorry, this book is unavailable for checkout.";
+    public static final String UNAVAILABLE_MSG = "Sorry, that book is not available.";
     public static final String NONEXISTING_MSG = "Sorry, this book does not exist.";
-    public static final String SUCCESSFUL = "Successful checkout";
+    public static final String SUCCESSFUL = "Thank you! Enjoy the book.";
 
     private BookRepository bookRepository;
 
