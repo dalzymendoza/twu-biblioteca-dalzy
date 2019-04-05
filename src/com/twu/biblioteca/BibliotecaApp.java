@@ -5,7 +5,6 @@ import com.twu.biblioteca.repositories.BookRepository;
 import com.twu.biblioteca.repositories.SampleBookRepository;
 import com.twu.biblioteca.representations.Book;
 import com.twu.biblioteca.representations.Option;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,7 +18,7 @@ public class BibliotecaApp {
 
     public static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\n";
     public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any books at the moment.\n";
-    private static final String NO_OPTION_ERROR = "Invalid option selected\n";
+    private static final String NO_OPTION_ERROR = "Invalid option selected";
     private static final int HEADER_WIDTH = 50;
     public static final String RESPONSE_MARKER = "**";
     private static final String LIBRARY_NAME = "BIBLIOTECA";
@@ -83,8 +82,7 @@ public class BibliotecaApp {
 
     public void run() {
         displayStartScreen();
-        String optionSelected = scanner.next();
-        selectOption(optionSelected, startScreenOptions, new Class[0]);
+        askForCharacterInput(startScreenOptions, new Object[0]);
     }
 
     protected void displayStartScreen() {
@@ -96,8 +94,7 @@ public class BibliotecaApp {
     protected void openMainMenuScreen() {
         printHeader(MAIN_MENU);
         printOptions(mainMenuOptions);
-        String optionSelected = scanner.next();
-        selectOption(optionSelected, mainMenuOptions, new Class[0]);
+        askForCharacterInput(mainMenuOptions, new Object[0]);
     }
 
     public void quit() {
@@ -107,15 +104,28 @@ public class BibliotecaApp {
 
     private void openViewAllBooksScreen() {
         displayAllBooks();
-        System.out.println("openingviewallbooksscreen");
         printOptions(viewAllBooksScreenOptions);
-        String optionSelected = scanner.next();
-        if (isInteger(optionSelected)) {
-            openBookScreen(Integer.parseInt(optionSelected));
+
+        boolean optionSelectedIsSuccess = false;
+        while (!optionSelectedIsSuccess) {
+            String optionSelected = scanner.next();
+            if (isInteger(optionSelected)) {
+                openBookScreen(Integer.parseInt(optionSelected));
+                optionSelectedIsSuccess = true;
+            }
+            else {
+                try {
+                    selectOption(optionSelected, viewAllBooksScreenOptions, new Object[0]);
+                    optionSelectedIsSuccess = true;
+                }
+                catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    System.err.println(e.fillInStackTrace());
+                    System.err.println(e.getStackTrace());
+                    System.out.println(NO_OPTION_ERROR + ": " + optionSelected);
+                }
+            }
         }
-        else {
-            selectOption(optionSelected, viewAllBooksScreenOptions, new Class[0]);
-        }
+
     }
 
     protected void displayAllBooks() {
@@ -139,10 +149,10 @@ public class BibliotecaApp {
         }
         catch(NonexistingBookError e) {
             System.out.print(NO_OPTION_ERROR);
+            openViewAllBooksScreen();
         }
         printOptions(viewBookScreenOptions);
-        String optionSelected = scanner.next();
-        selectOption(optionSelected, viewBookScreenOptions, new Integer[]{id});
+        askForCharacterInput(viewBookScreenOptions, new Integer[]{id});
     }
 
     private void checkoutBook(Integer id) {
@@ -154,33 +164,43 @@ public class BibliotecaApp {
         returnService.openReturnScreen();
     }
 
+    public void askForCharacterInput(List<Option> options, Object[] params) {
+        String optionString = scanner.next();
+        try {
+            selectOption(optionString, options, params);
+        }
+        catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            System.out.println(e.fillInStackTrace());
+            System.out.println(e.getStackTrace());
+            System.out.println(NO_OPTION_ERROR + ": " + optionString);
+            askForCharacterInput(options, params);
+        }
+    }
+
     private void printOptions(List<Option> options) {
         for (Option option : options) {
             System.out.println(option.getOptionPrintFormat());
         }
     }
 
-    protected void selectOption(String optionString, List<Option> options, Object[] params) {
+    public void selectOption(String optionString, List<Option> options, Object[] params)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         for (Option option : options) {
             if (optionString.toLowerCase().equals(option.getCode().toLowerCase())) {
 
-                try {
-                    Method method = getClass().getDeclaredMethod(option.getMethodName(), option.getParameterTypes());
-                    if (option.getParameterTypes().length > 0) {
-                        method.invoke(this, params);
-                    }
-                    else {
-                        method.invoke(this);
-                    }
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    System.err.println(e.fillInStackTrace());
-                    System.err.println(e.getStackTrace());
-                    System.out.print(NO_OPTION_ERROR + ": " + optionString);
+                Method method = getClass().getDeclaredMethod(option.getMethodName(), option.getParameterTypes());
+                if (option.getParameterTypes().length > 0) {
+                    method.invoke(this, params);
+                    return;
                 }
-                return;
+                else {
+                    method.invoke(this);
+                    return;
+                }
+
             }
         }
-        System.out.print(NO_OPTION_ERROR + ": " + optionString);
+        throw new NoSuchMethodException();
     }
 
     public void printHeader(String headerTitle){
