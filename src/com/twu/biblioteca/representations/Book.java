@@ -1,5 +1,6 @@
 package com.twu.biblioteca.representations;
 
+import com.twu.biblioteca.errors.AvailableBookError;
 import com.twu.biblioteca.errors.UnavailableBookError;
 
 import java.time.Year;
@@ -32,12 +33,21 @@ public class Book {
         return availability;
     }
 
-    public void checkout() throws UnavailableBookError{
+    public void checkout() throws UnavailableBookError {
         if(availability) {
             this.availability = false;
         }
         else {
             throw new UnavailableBookError();
+        }
+    }
+
+    public void returnBook() throws AvailableBookError {
+        if (availability) {
+            throw new AvailableBookError();
+        }
+        else {
+            this.availability = true;
         }
     }
 }

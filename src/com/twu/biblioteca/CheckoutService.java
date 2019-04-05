@@ -12,6 +12,7 @@ public class CheckoutService {
     public static final String NONEXISTING_MSG = "Sorry, this book does not exist.";
     public static final String SUCCESSFUL = "Thank you! Enjoy the book.";
 
+
     private BookRepository bookRepository;
 
     public CheckoutService(BookRepository bookRepository) {
@@ -21,13 +22,13 @@ public class CheckoutService {
     public void checkoutBook(int id) {
         try {
             bookRepository.checkoutBook(id);
-            System.out.println(SUCCESSFUL);
+            System.out.println(BibliotecaApp.RESPONSE_MARKER + " " + SUCCESSFUL);
         }
         catch (UnavailableBookError e) {
-            System.out.println(UNAVAILABLE_MSG);
+            System.out.println(BibliotecaApp.RESPONSE_MARKER + " " + UNAVAILABLE_MSG);
         }
         catch (NonexistingBookError e) {
-            System.out.println(NONEXISTING_MSG);
+            System.out.println(BibliotecaApp.RESPONSE_MARKER + " " + NONEXISTING_MSG);
         }
     }
 }

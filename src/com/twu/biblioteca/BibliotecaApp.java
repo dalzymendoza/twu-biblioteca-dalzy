@@ -21,6 +21,7 @@ public class BibliotecaApp {
     public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any books at the moment.\n";
     private static final String NO_OPTION_ERROR = "Invalid option selected\n";
     private static final int HEADER_WIDTH = 50;
+    public static final String RESPONSE_MARKER = "**";
     private static final String LIBRARY_NAME = "BIBLIOTECA";
     private static final String MAIN_MENU = "MAIN MENU";
     private static final String BOOKS = "BOOKS";
@@ -30,6 +31,7 @@ public class BibliotecaApp {
 
     private BookRepository bookRepository;
     private CheckoutService checkoutService;
+    private ReturnService returnService;
     private List<Option> startScreenOptions;
     private List<Option> mainMenuOptions;
     private List<Option> viewAllBooksScreenOptions;
@@ -46,6 +48,7 @@ public class BibliotecaApp {
         this.bookRepository = bookRepository;
         assertNotNull(bookRepository);
         this.checkoutService = new CheckoutService(bookRepository);
+        this.returnService = new ReturnService(bookRepository);
         scanner = new Scanner(System.in);
         setStartScreenOptions();
         setMainMenuOptions();
@@ -62,6 +65,7 @@ public class BibliotecaApp {
     private void setMainMenuOptions() {
         mainMenuOptions = new ArrayList<>();
         mainMenuOptions.add(new Option("V", "View All Books", "openViewAllBooksScreen", new Class[0]));
+        mainMenuOptions.add(new Option("R", "Return a Book", "returnBook", new Class[0]));
         mainMenuOptions.add(new Option(BACK_CODE, "Go back to Start Screen", "run", new Class[0]));
     }
 
@@ -144,6 +148,11 @@ public class BibliotecaApp {
     private void checkoutBook(Integer id) {
         checkoutService.checkoutBook(id);
         openViewAllBooksScreen();
+    }
+
+    private void openReturnBookScreen() {
+
+
     }
 
     private void printOptions(List<Option> options) {

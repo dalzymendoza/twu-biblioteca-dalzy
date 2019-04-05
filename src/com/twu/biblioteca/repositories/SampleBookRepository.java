@@ -1,5 +1,6 @@
 package com.twu.biblioteca.repositories;
 
+import com.twu.biblioteca.errors.AvailableBookError;
 import com.twu.biblioteca.errors.NonexistingBookError;
 import com.twu.biblioteca.errors.UnavailableBookError;
 import com.twu.biblioteca.representations.Book;
@@ -39,5 +40,22 @@ public class SampleBookRepository extends BookRepository {
             return books.get(id);
         }
         throw new NonexistingBookError();
+    }
+
+    @Override
+    public void returnBook(int id) throws NonexistingBookError, AvailableBookError {
+        if (books.containsKey(id)) {
+            Book book = books.get(id);
+            if (book.getAvailability()) {
+                throw new AvailableBookError();
+            }
+            else {
+                book.returnBook();
+            }
+
+        }
+        else {
+            throw new NonexistingBookError();
+        }
     }
 }
