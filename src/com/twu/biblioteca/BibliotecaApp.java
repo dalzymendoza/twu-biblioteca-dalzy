@@ -171,8 +171,8 @@ public class BibliotecaApp {
             selectOption(optionString, options, params);
         }
         catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            System.out.println(e.fillInStackTrace());
-            System.out.println(e.getStackTrace());
+            System.err.println(e.fillInStackTrace());
+            System.err.println(e.getStackTrace());
             System.out.println(NO_OPTION_ERROR + ": " + optionString);
             askForCharacterInput(options, params);
         }

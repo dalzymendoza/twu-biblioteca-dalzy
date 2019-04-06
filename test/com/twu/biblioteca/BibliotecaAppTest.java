@@ -35,7 +35,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void correct_welcome_message() {
+    public void correctWelcomeMessage() {
         BookRepository bookRepository = mock(BookRepository.class);
         BibliotecaApp app = new BibliotecaApp(bookRepository);
         app.displayStartScreen();
@@ -43,35 +43,8 @@ public class BibliotecaAppTest {
                 containsString(BibliotecaApp.WELCOME_MESSAGE));
     }
 
-//    private void setInStream(String inContent) {
-//        ByteArrayInputStream inStream = new ByteArrayInputStream(inContent.getBytes());
-//        System.setIn(inStream);
-//    }
-
-//    @Test
-//    public void access_main_menu_by_pressing_M_from_start_screen() {
-//        BookRepository bookRepository = mock(BookRepository.class);
-//        BibliotecaApp app = new BibliotecaApp(bookRepository);
-//        BibliotecaApp spyApp = spy(app);
-//        setInStream("M B Q");
-//        spyApp.run();
-//        verify(spyApp).openMainMenuScreen();
-//    }
-//
-//    @Test
-//    public void access_list_of_books_by_pressing_V_from_main_menu() {
-//        BookRepository bookRepository = mock(BookRepository.class);
-//        List<Book> testListOf3Books = generateTestListOf3Books();
-//        when(bookRepository.viewAllBooks()).thenReturn(testListOf3Books);
-//        BibliotecaApp app = new BibliotecaApp(bookRepository);
-//        BibliotecaApp spyApp = spy(app);
-//        setInStream("M V B Q");
-//        spyApp.run();
-//        verify(spyApp).displayAllBooks();
-//    }
-
     @Test
-    public void view_empty_list_of_books() {
+    public void viewEmptyListOfBooks() {
         BookRepository bookRepository = mock(BookRepository.class);
         when(bookRepository.viewAllBooks()).thenReturn(new ArrayList<Book>());
         BibliotecaApp app = new BibliotecaApp(bookRepository);
@@ -82,7 +55,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void view_non_empty_list_of_books() {
+    public void viewNonEmptyListOfBooks() {
         BookRepository bookRepository = mock(BookRepository.class);
         List<Book> testListOf3Books = generateTestListOf3Books();
         when(bookRepository.viewAllBooks()).thenReturn(testListOf3Books);
