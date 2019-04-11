@@ -8,9 +8,9 @@ public class ReturnService extends ServiceManager {
 
     public static final String HEADER = "RETURN SERVICE";
 
-    public enum ReturnResponse {
-        SUCCESS, NONEXISTING_BOOK, ALREADY_AVAILABLE
-    }
+    public static final String SUCCESS = "Thank you! Book has been successfully returned!";
+    public static final String NON_EXISTING_BOOK = "Sorry, there is no such book in our system.";
+    public static final String ALREADY_AVAILABLE = "That book is not checked out.";
 
     private BookRepository bookRepository;
     private BookScreenManager bookScreenManager;
@@ -53,19 +53,16 @@ public class ReturnService extends ServiceManager {
         return optionsPrintFormat.toString();
     }
 
-    public ReturnResponse returnBook(int id) {
+    public void returnBook(int id) {
         try {
             bookRepository.returnBook(id);
-            uiHandler.printUserActionRespone("Thank you! Book #" + id + "is successfully returned!");
-            return ReturnResponse.SUCCESS;
+            uiHandler.printUserActionRespone(SUCCESS);
         }
         catch (NonexistingBookError e) {
-            uiHandler.printUserActionRespone("Sorry, there is no Book#" + id);
-            return ReturnResponse.NONEXISTING_BOOK;
+            uiHandler.printUserActionRespone(NON_EXISTING_BOOK);
         }
         catch (AvailableBookError e) {
-            uiHandler.printUserActionRespone("Book#" + id + " is not checked out.");
-            return ReturnResponse.ALREADY_AVAILABLE;
+            uiHandler.printUserActionRespone(ALREADY_AVAILABLE);
         }
     }
 }

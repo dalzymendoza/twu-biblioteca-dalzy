@@ -42,9 +42,9 @@ public class CheckoutServiceTest {
         System.setIn(System.in);
         System.setOut(System.out);
     }
-
+//
 //    @Test
-//    public void checkoutAvailableBook() {
+//    public void shouldcheckoutAvailableBook() {
 //        BookRepository bookRepository = mock(BookRepository.class);
 //        List<Book> testListOf3Books = generateTestListOf3Books();
 //        when(bookRepository.viewAllBooks()).thenReturn(testListOf3Books);
@@ -55,7 +55,7 @@ public class CheckoutServiceTest {
 //        service.checkoutBook(1);
 //        assertTrue(testListOf3Books.get(0).getAvailability());
 //    }
-//
+
 //    @Test
 //    public void checkoutExistingButUnavailableBook() throws NonexistingBookError, UnavailableBookError {
 //        BookRepository bookRepository = mock(BookRepository.class);
@@ -74,11 +74,11 @@ public class CheckoutServiceTest {
 //        assertThat(outContent.toString(), containsString(CheckoutService.NONEXISTING_MSG));
 //    }
 //
-//    private List<Book> generateTestListOf3Books() {
-//        List<Book> listOfBooks = new ArrayList<Book>();
-//        listOfBooks.add(new Book(1, "A Brief History of Time", "Stephen Hawking", Year.of(1988)));
-//        listOfBooks.add(new Book(2, "The Lion, the Witch and the Wardrobe", "C.S. Lewis", Year.of(1950)));
-//        listOfBooks.add(new Book(3, "Your Dream Life Starts Here", "Kristina Karlsson", Year.of(2018)));
-//        return listOfBooks;
-//    }
+    private List<Book> generateTestListOf3Books() {
+        List<Book> listOfBooks = new ArrayList<Book>();
+        listOfBooks.add(new Book(1, "A Brief History of Time", "Stephen Hawking", Year.of(1988)));
+        listOfBooks.add(new Book(2, "The Lion, the Witch and the Wardrobe", "C.S. Lewis", Year.of(1950)));
+        listOfBooks.add(new Book(3, "Your Dream Life Starts Here", "Kristina Karlsson", Year.of(2018)));
+        return listOfBooks;
+    }
 }
