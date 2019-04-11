@@ -8,9 +8,9 @@ import com.twu.biblioteca.representations.Book;
 
 public class CheckoutService extends ServiceManager{
 
-    public static final String UNAVAILABLE_MSG = "Sorry, that book is not available.";
-    public static final String NONEXISTING_MSG = "Sorry, this book does not exist.";
-    public static final String SUCCESSFUL = "Thank you! Enjoy the book.";
+    public static final String NOT_AVAILABLE_BOOK = "Sorry, that book is not available.";
+    public static final String NONEXISTING_BOOK = "Sorry, this book does not exist.";
+    public static final String SUCCESS = "Thank you! Enjoy the book.";
 
     public static final String HEADER = "CHECKOUT SERVICE";
 
@@ -67,13 +67,13 @@ public class CheckoutService extends ServiceManager{
     public void checkoutBook(int id) {
         try {
             bookRepository.checkoutBook(id);
-            uiHandler.printUserActionRespone(SUCCESSFUL);
+            uiHandler.printUserActionRespone(SUCCESS);
         }
         catch (UnavailableBookError e) {
-            uiHandler.printUserActionRespone(UNAVAILABLE_MSG);
+            uiHandler.printUserActionRespone(NOT_AVAILABLE_BOOK);
         }
         catch (NonexistingBookError e) {
-            uiHandler.printUserActionRespone(NONEXISTING_MSG);
+            uiHandler.printUserActionRespone(NONEXISTING_BOOK);
         }
     }
 
