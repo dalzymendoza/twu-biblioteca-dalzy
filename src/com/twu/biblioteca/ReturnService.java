@@ -3,19 +3,17 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.errors.AvailableBookError;
 import com.twu.biblioteca.errors.NonexistingBookError;
 import com.twu.biblioteca.repositories.BookRepository;
-import com.twu.biblioteca.representations.Option;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 
 public class ReturnService extends ServiceManager {
 
     public static final String HEADER = "RETURN SERVICE";
 
+    public enum ReturnResponse {
+        SUCCESS, NONEXISTING_BOOK, ALREADY_AVAILABLE
+    }
+
     private BookRepository bookRepository;
     private BookScreenManager bookScreenManager;
-    private List<Option> returnScreenOptions;
 
 
     public ReturnService(UIHandler uiHandler, BookScreenManager bookScreenManager, BookRepository bookRepository) {
@@ -55,16 +53,19 @@ public class ReturnService extends ServiceManager {
         return optionsPrintFormat.toString();
     }
 
-    public void returnBook(int id) {
+    public ReturnResponse returnBook(int id) {
         try {
             bookRepository.returnBook(id);
             uiHandler.printUserActionRespone("Thank you! Book #" + id + "is successfully returned!");
+            return ReturnResponse.SUCCESS;
         }
         catch (NonexistingBookError e) {
             uiHandler.printUserActionRespone("Sorry, there is no Book#" + id);
+            return ReturnResponse.NONEXISTING_BOOK;
         }
         catch (AvailableBookError e) {
             uiHandler.printUserActionRespone("Book#" + id + " is not checked out.");
+            return ReturnResponse.ALREADY_AVAILABLE;
         }
     }
 }

@@ -2,26 +2,18 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.errors.AvailableBookError;
 import com.twu.biblioteca.errors.NonexistingBookError;
-import com.twu.biblioteca.errors.UnavailableBookError;
 import com.twu.biblioteca.repositories.BookRepository;
-import com.twu.biblioteca.representations.Book;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.List;
-import java.util.Scanner;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.contains;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 public class ReturnServiceTest {
 
@@ -38,34 +30,38 @@ public class ReturnServiceTest {
         System.setOut(System.out);
     }
 
-//    @Test
-//    public void returnCheckedOutBookUsingCorrectId() {
-//        BookRepository bookRepository = mock(BookRepository.class);
-//        BibliotecaApp app = mock(BibliotecaApp.class);
-//        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
-//        service.returnBook(1);
-//        assertThat(outContent.toString(), containsString(ReturnService.SUCCESSFUL_MSG));
-//    }
-//
-//    @Test
-//    public void returnCheckedOutBookUsingIncorrectId() throws NonexistingBookError, AvailableBookError {
-//        BookRepository bookRepository = mock(BookRepository.class);
-//        BibliotecaApp app = mock(BibliotecaApp.class);
-//        doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
-//        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
-//        service.returnBook(1);
-//        assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
-//    }
-//
-//    @Test
-//    public void returnBookNotCheckedOut() throws NonexistingBookError, AvailableBookError {
-//        BookRepository bookRepository = mock(BookRepository.class);
-//        BibliotecaApp app = mock(BibliotecaApp.class);
-//        doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
-//        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
-//        service.returnBook(1);
-//        assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
-//    }
+    @Test
+    public void shouldGetSuccessResponseIfReturningACheckedOutBookUsingValidBookId() {
+        UIHandler uiHandler = mock(UIHandler.class);
+        BookScreenManager bookScreenManager = mock(BookScreenManager.class);
+        BookRepository bookRepository = mock(BookRepository.class);
+
+        ReturnService returnService = new ReturnService(uiHandler, bookScreenManager, bookRepository);
+        assertThat(returnService.returnBook(1), is(ReturnService.ReturnResponse.SUCCESS));
+    }
+
+    @Test
+    public void shouldGetNonexistingBookResponseIfReturningBookUsingInvalidBookId()
+            throws NonexistingBookError, AvailableBookError{
+        UIHandler uiHandler = mock(UIHandler.class);
+        BookScreenManager bookScreenManager = mock(BookScreenManager.class);
+        BookRepository bookRepository = mock(BookRepository.class);
+        doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
+
+        ReturnService returnService = new ReturnService(uiHandler, bookScreenManager, bookRepository);
+        assertThat(returnService.returnBook(1), is(ReturnService.ReturnResponse.NONEXISTING_BOOK));
+    }
+
+    @Test
+    public void shouldGetAlreadyAvailableBookResponseIfReturningBookThatIsntCheckedOut() throws NonexistingBookError, AvailableBookError {
+        UIHandler uiHandler = mock(UIHandler.class);
+        BookScreenManager bookScreenManager = mock(BookScreenManager.class);
+        BookRepository bookRepository = mock(BookRepository.class);
+        doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
+
+        ReturnService returnService = new ReturnService(uiHandler, bookScreenManager, bookRepository);
+        assertThat(returnService.returnBook(1), is(ReturnService.ReturnResponse.ALREADY_AVAILABLE));
+    }
 }
 
 
