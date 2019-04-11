@@ -37,6 +37,7 @@ public class HomeScreenManager extends ServiceManager {
         StringBuilder optionsPrintFormat = new StringBuilder();
         optionsPrintFormat.append("[B] Books Library\n");
         optionsPrintFormat.append("[M] Movies Library\n");
+        optionsPrintFormat.append("[Q] Quit application\n");
         return optionsPrintFormat.toString();
     }
 
