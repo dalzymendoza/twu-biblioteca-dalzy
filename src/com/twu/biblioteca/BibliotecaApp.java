@@ -46,9 +46,9 @@ public class BibliotecaApp {
     public BibliotecaApp(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
         assertNotNull(bookRepository);
-        this.checkoutService = new CheckoutService(bookRepository);
+//        this.checkoutService = new CheckoutService(bookRepository);
         scanner = new Scanner(System.in);
-        this.returnService = new ReturnService(this, bookRepository, scanner);
+//        this.returnService = new ReturnService(uiHandler, new BookScreenManager(), bookRepository, scanner);
         setStartScreenOptions();
         setMainMenuOptions();
         setViewAllBooksOptions();
@@ -65,7 +65,7 @@ public class BibliotecaApp {
         mainMenuOptions = new ArrayList<>();
         mainMenuOptions.add(new Option("V", "View All Books", "openViewAllBooksScreen", new Class[0]));
         mainMenuOptions.add(new Option("R", "Return a Book", "openReturnBookScreen", new Class[0]));
-        mainMenuOptions.add(new Option(BACK_CODE, "Go back to Start Screen", "run", new Class[0]));
+        mainMenuOptions.add(new Option(BACK_CODE, "Go back to Start Screen", "runCurrentService", new Class[0]));
     }
 
     private void setViewAllBooksOptions() {
@@ -161,9 +161,9 @@ public class BibliotecaApp {
         openViewAllBooksScreen();
     }
 
-    private void openReturnBookScreen() {
-        returnService.openReturnScreen();
-    }
+//    private void openReturnBookScreen() {
+//        returnService.openReturnScreen();
+//    }
 
     public void askForCharacterInput(List<Option> options, Object[] params) {
         String optionString = scanner.next();

@@ -38,34 +38,34 @@ public class ReturnServiceTest {
         System.setOut(System.out);
     }
 
-    @Test
-    public void returnCheckedOutBookUsingCorrectId() {
-        BookRepository bookRepository = mock(BookRepository.class);
-        BibliotecaApp app = mock(BibliotecaApp.class);
-        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
-        service.returnBook(1);
-        assertThat(outContent.toString(), containsString(ReturnService.SUCCESSFUL_MSG));
-    }
-
-    @Test
-    public void returnCheckedOutBookUsingIncorrectId() throws NonexistingBookError, AvailableBookError {
-        BookRepository bookRepository = mock(BookRepository.class);
-        BibliotecaApp app = mock(BibliotecaApp.class);
-        doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
-        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
-        service.returnBook(1);
-        assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
-    }
-
-    @Test
-    public void returnBookNotCheckedOut() throws NonexistingBookError, AvailableBookError {
-        BookRepository bookRepository = mock(BookRepository.class);
-        BibliotecaApp app = mock(BibliotecaApp.class);
-        doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
-        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
-        service.returnBook(1);
-        assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
-    }
+//    @Test
+//    public void returnCheckedOutBookUsingCorrectId() {
+//        BookRepository bookRepository = mock(BookRepository.class);
+//        BibliotecaApp app = mock(BibliotecaApp.class);
+//        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
+//        service.returnBook(1);
+//        assertThat(outContent.toString(), containsString(ReturnService.SUCCESSFUL_MSG));
+//    }
+//
+//    @Test
+//    public void returnCheckedOutBookUsingIncorrectId() throws NonexistingBookError, AvailableBookError {
+//        BookRepository bookRepository = mock(BookRepository.class);
+//        BibliotecaApp app = mock(BibliotecaApp.class);
+//        doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
+//        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
+//        service.returnBook(1);
+//        assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
+//    }
+//
+//    @Test
+//    public void returnBookNotCheckedOut() throws NonexistingBookError, AvailableBookError {
+//        BookRepository bookRepository = mock(BookRepository.class);
+//        BibliotecaApp app = mock(BibliotecaApp.class);
+//        doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
+//        ReturnService service = new ReturnService(app, bookRepository, new Scanner(System.in));
+//        service.returnBook(1);
+//        assertThat(outContent.toString(), containsString(ReturnService.UNSUCCESSFUL_MSG));
+//    }
 }
 
 

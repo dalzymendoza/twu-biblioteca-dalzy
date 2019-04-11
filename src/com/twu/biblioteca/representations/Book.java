@@ -21,10 +21,6 @@ public class Book {
         this.availability = true;
     }
 
-    public String getTitle(){
-        return title;
-    }
-
     public String getAuthorAndYearPrintFormat() {
         return "Author: " + author + "\n" + "Year: " + yearOfPublishing.toString() + "\n";
     }
@@ -35,6 +31,14 @@ public class Book {
 
     public boolean getAvailability() {
         return availability;
+    }
+
+    public String getTitle(){
+        return title;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void checkout() throws UnavailableBookError {
