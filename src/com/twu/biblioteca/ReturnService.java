@@ -16,35 +16,35 @@ public class ReturnService extends Service {
     private BookLibraryService bookLibraryService;
 
 
-    public ReturnService(UIHandler uiHandler, BookLibraryService bookLibraryService, BookRepository bookRepository) {
-        super(HEADER, uiHandler);
+    public ReturnService(ServiceHandler serviceHandler, BookLibraryService bookLibraryService, BookRepository bookRepository) {
+        super(HEADER, serviceHandler);
         this.bookLibraryService = bookLibraryService;
         this.bookRepository = bookRepository;
     }
 
     @Override
-    public UIHandler.InputProcessResponse processInput(String input) {
+    public ServiceHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "B":
-                uiHandler.setService(bookLibraryService);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                serviceHandler.setService(bookLibraryService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
                 try {
                     int bookId = Integer.parseInt(input);
                     returnBook(bookId);
-                    return UIHandler.InputProcessResponse.SUCCESS;
+                    return ServiceHandler.InputProcessResponse.SUCCESS;
                 }
                 catch (NumberFormatException e) {
-                    return UIHandler.InputProcessResponse.FAIL;
+                    return ServiceHandler.InputProcessResponse.FAIL;
                 }
         }
     }
 
     @Override
     public void displayStartScreen() {
-        uiHandler.printHeader(HEADER);
-        uiHandler.printContent(getOptionsPrintFormat());
-        uiHandler.printContent("Please type the ID of the book you're returning: ");
+        serviceHandler.printHeader(HEADER);
+        serviceHandler.printContent(getOptionsPrintFormat());
+        serviceHandler.printContent("Please type the ID of the book you're returning: ");
     }
 
     private String getOptionsPrintFormat() {
@@ -56,13 +56,13 @@ public class ReturnService extends Service {
     public void returnBook(int id) {
         try {
             bookRepository.returnBook(id);
-            uiHandler.printUserActionRespone(SUCCESS);
+            serviceHandler.printUserActionRespone(SUCCESS);
         }
         catch (NonexistingBookError e) {
-            uiHandler.printUserActionRespone(NON_EXISTING_BOOK);
+            serviceHandler.printUserActionRespone(NON_EXISTING_BOOK);
         }
         catch (AvailableBookError e) {
-            uiHandler.printUserActionRespone(ALREADY_AVAILABLE);
+            serviceHandler.printUserActionRespone(ALREADY_AVAILABLE);
         }
     }
 }

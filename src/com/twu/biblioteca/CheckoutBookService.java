@@ -17,42 +17,42 @@ public class CheckoutBookService extends Service {
     private BookRepository bookRepository;
     private ViewBookService viewBookService;
     private BookLibraryService bookLibraryService;
-    private UIHandler uiHandler;
+    private ServiceHandler serviceHandler;
     private Book book;
 
-    public CheckoutBookService(UIHandler uiHandler, BookLibraryService bookLibraryService,
+    public CheckoutBookService(ServiceHandler serviceHandler, BookLibraryService bookLibraryService,
                                ViewBookService viewBookService, BookRepository bookRepository) {
-        super(HEADER, uiHandler);
-        this.uiHandler = uiHandler;
+        super(HEADER, serviceHandler);
+        this.serviceHandler = serviceHandler;
         this.viewBookService = viewBookService;
         this.bookRepository = bookRepository;
         this.bookLibraryService = bookLibraryService;
     }
 
     @Override
-    public UIHandler.InputProcessResponse processInput(String input) {
+    public ServiceHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "Y":
                 checkoutBook(book.getId());
-                uiHandler.setService(bookLibraryService);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                serviceHandler.setService(bookLibraryService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             case "N":
-                uiHandler.setService(viewBookService);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                serviceHandler.setService(viewBookService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
-                return UIHandler.InputProcessResponse.FAIL;
+                return ServiceHandler.InputProcessResponse.FAIL;
         }
     }
 
     @Override
     public void displayStartScreen() {
         if (book == null) {
-            uiHandler.printUserActionRespone("No book selected for checkout");
-            uiHandler.setService(viewBookService);
+            serviceHandler.printUserActionRespone("No book selected for checkout");
+            serviceHandler.setService(viewBookService);
         }
         else {
-            uiHandler.printHeader("Checking out " + book.getTitle());
-            uiHandler.printContent(getOptionsPrintFormat());
+            serviceHandler.printHeader("Checking out " + book.getTitle());
+            serviceHandler.printContent(getOptionsPrintFormat());
         }
 
     }
@@ -67,13 +67,13 @@ public class CheckoutBookService extends Service {
     public void checkoutBook(int id) {
         try {
             bookRepository.checkoutBook(id);
-            uiHandler.printUserActionRespone(SUCCESS);
+            serviceHandler.printUserActionRespone(SUCCESS);
         }
         catch (UnavailableBookError e) {
-            uiHandler.printUserActionRespone(NOT_AVAILABLE_BOOK);
+            serviceHandler.printUserActionRespone(NOT_AVAILABLE_BOOK);
         }
         catch (NonexistingBookError e) {
-            uiHandler.printUserActionRespone(NONEXISTING_BOOK);
+            serviceHandler.printUserActionRespone(NONEXISTING_BOOK);
         }
     }
 

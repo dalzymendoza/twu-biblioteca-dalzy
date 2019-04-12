@@ -16,44 +16,44 @@ public class BookLibraryService extends Service {
     private HomeService homeService;
     private ReturnService returnService;
 
-    public BookLibraryService(HomeService homeService, UIHandler uiHandler) {
-        super(HEADER, uiHandler);
+    public BookLibraryService(HomeService homeService, ServiceHandler serviceHandler) {
+        super(HEADER, serviceHandler);
         this.homeService = homeService;
         this.bookRepository = new SampleBookRepository();
-        this.returnService = new ReturnService(uiHandler, this, this.bookRepository);
+        this.returnService = new ReturnService(serviceHandler, this, this.bookRepository);
     }
 
     @Override
-    public UIHandler.InputProcessResponse processInput(String input) {
+    public ServiceHandler.InputProcessResponse processInput(String input) {
         switch (input) {
             case "B":
-                uiHandler.setService(homeService);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                serviceHandler.setService(homeService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             case "R":
                 System.out.println("Return Service");
-                uiHandler.setService(returnService);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                serviceHandler.setService(returnService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
                 try {
                     int bookId = Integer.parseInt(input);
-                    uiHandler.setService(new ViewBookService(uiHandler, this,
+                    serviceHandler.setService(new ViewBookService(serviceHandler, this,
                                                                 bookRepository, bookRepository.getBook(bookId)));
-                    return UIHandler.InputProcessResponse.SUCCESS;
+                    return ServiceHandler.InputProcessResponse.SUCCESS;
                 }
                 catch (NumberFormatException | NonexistingBookError e) {
-                    return UIHandler.InputProcessResponse.FAIL;
+                    return ServiceHandler.InputProcessResponse.FAIL;
                 }
         }
     }
 
     @Override
     public void displayStartScreen() {
-        if(uiHandler == null) {
+        if(serviceHandler == null) {
             return;
         }
-        uiHandler.printHeader(HEADER);
-        uiHandler.printContent(getAllBooksPrintFormat());
-        uiHandler.printContent(getOptionsPrintFormat());
+        serviceHandler.printHeader(HEADER);
+        serviceHandler.printContent(getAllBooksPrintFormat());
+        serviceHandler.printContent(getOptionsPrintFormat());
     }
 
     private String getOptionsPrintFormat() {

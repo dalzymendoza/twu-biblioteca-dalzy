@@ -24,14 +24,14 @@ public class CheckoutBookServiceTest {
     @Test
     public void shouldPrintSuccessIfCheckingOutAvailableBookWithValidId() {
         BookRepository bookRepository = mock(BookRepository.class);
-        UIHandler uiHandler = mock(UIHandler.class);
+        ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         ViewBookService viewBookService = mock (ViewBookService.class);
 
-        CheckoutBookService checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryServiceManager,
+        CheckoutBookService checkoutBookService = new CheckoutBookService(serviceHandler, bookLibraryServiceManager,
                 viewBookService, bookRepository);
         checkoutBookService.checkoutBook(1);
-        verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
+        verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
         assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutBookService.SUCCESS));
     }
 
@@ -40,14 +40,14 @@ public class CheckoutBookServiceTest {
             throws NonexistingBookError, UnavailableBookError {
         BookRepository bookRepository = mock(BookRepository.class);
         doThrow(new UnavailableBookError()).when(bookRepository).checkoutBook(anyInt());
-        UIHandler uiHandler = mock(UIHandler.class);
+        ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         ViewBookService viewBookService = mock (ViewBookService.class);
 
-        CheckoutBookService checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryServiceManager,
+        CheckoutBookService checkoutBookService = new CheckoutBookService(serviceHandler, bookLibraryServiceManager,
                 viewBookService, bookRepository);
         checkoutBookService.checkoutBook(1);
-        verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
+        verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
         assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutBookService.NOT_AVAILABLE_BOOK));
     }
 
@@ -56,14 +56,14 @@ public class CheckoutBookServiceTest {
             throws NonexistingBookError, UnavailableBookError  {
         BookRepository bookRepository = mock(BookRepository.class);
         doThrow(new NonexistingBookError()).when(bookRepository).checkoutBook(anyInt());
-        UIHandler uiHandler = mock(UIHandler.class);
+        ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         ViewBookService viewBookService = mock (ViewBookService.class);
 
-        CheckoutBookService checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryServiceManager,
+        CheckoutBookService checkoutBookService = new CheckoutBookService(serviceHandler, bookLibraryServiceManager,
                 viewBookService, bookRepository);
         checkoutBookService.checkoutBook(1);
-        verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
+        verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
         assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutBookService.NONEXISTING_BOOK));
     }
 

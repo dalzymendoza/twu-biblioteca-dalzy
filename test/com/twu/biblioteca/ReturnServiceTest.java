@@ -19,41 +19,41 @@ public class ReturnServiceTest {
 
     @Test
     public void shouldPrintSuccessResponseIfReturningACheckedOutBookUsingValidBookId() {
-        UIHandler uiHandler = mock(UIHandler.class);
+        ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         BookRepository bookRepository = mock(BookRepository.class);
 
-        ReturnService returnService = new ReturnService(uiHandler, bookLibraryServiceManager, bookRepository);
+        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
         returnService.returnBook(1);
-        verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
+        verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
         assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.SUCCESS));
     }
 
     @Test
     public void shouldPrintNonexistingBookResponseIfReturningBookUsingInvalidBookId()
             throws NonexistingBookError, AvailableBookError{
-        UIHandler uiHandler = mock(UIHandler.class);
+        ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         BookRepository bookRepository = mock(BookRepository.class);
         doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
 
-        ReturnService returnService = new ReturnService(uiHandler, bookLibraryServiceManager, bookRepository);
+        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
         returnService.returnBook(1);
-        verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
+        verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
         assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.NON_EXISTING_BOOK));
     }
 
     @Test
     public void shouldPrintAlreadyAvailableBookResponseIfReturningBookThatIsntCheckedOut()
             throws NonexistingBookError, AvailableBookError {
-        UIHandler uiHandler = mock(UIHandler.class);
+        ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         BookRepository bookRepository = mock(BookRepository.class);
         doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
 
-        ReturnService returnService = new ReturnService(uiHandler, bookLibraryServiceManager, bookRepository);
+        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
         returnService.returnBook(1);
-        verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
+        verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
         assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.ALREADY_AVAILABLE));
     }
 }

@@ -5,32 +5,32 @@ public class HomeService extends Service {
     private static final String HEADER = "HOME";
     private BookLibraryService bookLibraryService;
 
-    public HomeService(UIHandler uiHandler) {
-        super(HEADER, uiHandler);
-        this.bookLibraryService = new BookLibraryService(this, uiHandler);
+    public HomeService(ServiceHandler serviceHandler) {
+        super(HEADER, serviceHandler);
+        this.bookLibraryService = new BookLibraryService(this, serviceHandler);
     }
 
     @Override
-    public UIHandler.InputProcessResponse processInput(String input) {
+    public ServiceHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "B":
-                uiHandler.setService(bookLibraryService);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                serviceHandler.setService(bookLibraryService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             case "M":
                 System.out.println("Coming soon!");
-                return UIHandler.InputProcessResponse.SUCCESS;
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
-                return UIHandler.InputProcessResponse.FAIL;
+                return ServiceHandler.InputProcessResponse.FAIL;
         }
     }
 
     @Override
     public void displayStartScreen() {
-        if(uiHandler == null) {
+        if(serviceHandler == null) {
             return;
         }
-        uiHandler.printHeader(HEADER);
-        uiHandler.printContent(getOptionsPrintFormat());
+        serviceHandler.printHeader(HEADER);
+        serviceHandler.printContent(getOptionsPrintFormat());
     }
 
     private String getOptionsPrintFormat() {

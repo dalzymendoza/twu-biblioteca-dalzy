@@ -3,17 +3,17 @@ package com.twu.biblioteca;
 public abstract class Service {
 
     String header;
-    UIHandler uiHandler;
+    ServiceHandler serviceHandler;
 
-    public Service(String header, UIHandler uiHandler) {
+    public Service(String header, ServiceHandler serviceHandler) {
         this.header = header;
-        this.uiHandler = uiHandler;
+        this.serviceHandler = serviceHandler;
     }
 
-    public abstract UIHandler.InputProcessResponse processInput(String input);
+    public abstract ServiceHandler.InputProcessResponse processInput(String input);
     public abstract void displayStartScreen();
 
-    public void setUIHandler(UIHandler uiHandler) {
-        this.uiHandler = uiHandler;
+    public void setUIHandler(ServiceHandler serviceHandler) {
+        this.serviceHandler = serviceHandler;
     }
 }

@@ -2,7 +2,7 @@ package com.twu.biblioteca;
 
 import java.util.Scanner;
 
-public class UIHandler {
+public class ServiceHandler {
     private static final int HEADER_WIDTH = 50;
     private static final String RESPONSE_TO_USER_ACTION_BULLET = "*********";
 
@@ -13,11 +13,11 @@ public class UIHandler {
     private Service service;
     private Scanner scanner;
 
-    public UIHandler() {
+    public ServiceHandler() {
         this.scanner = new Scanner(System.in);
     }
 
-    public UIHandler(Service service) {
+    public ServiceHandler(Service service) {
         this.service = service;
         this.scanner = new Scanner(System.in);
     }

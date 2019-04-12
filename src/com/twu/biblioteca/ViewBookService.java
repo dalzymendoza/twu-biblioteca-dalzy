@@ -8,38 +8,38 @@ public class ViewBookService extends Service {
     private Book book;
     private BookLibraryService bookLibraryService;
     private CheckoutBookService checkoutBookService;
-    private UIHandler uiHandler;
+    private ServiceHandler serviceHandler;
 
-    public ViewBookService(UIHandler uiHandler, BookLibraryService bookLibraryService,
+    public ViewBookService(ServiceHandler serviceHandler, BookLibraryService bookLibraryService,
                            BookRepository bookRepository, Book book) {
-        super(book.getTitle(), uiHandler);
-        this.uiHandler = uiHandler;
+        super(book.getTitle(), serviceHandler);
+        this.serviceHandler = serviceHandler;
         this.book = book;
         this.bookLibraryService = bookLibraryService;
-        this.checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryService,
+        this.checkoutBookService = new CheckoutBookService(serviceHandler, bookLibraryService,
                                         this, bookRepository);
     }
 
     @Override
-    public UIHandler.InputProcessResponse processInput(String input) {
+    public ServiceHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "B":
-                uiHandler.setService(bookLibraryService);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                serviceHandler.setService(bookLibraryService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             case "C":
-                uiHandler.setService(checkoutBookService);
+                serviceHandler.setService(checkoutBookService);
                 checkoutBookService.setBook(book);
-                return UIHandler.InputProcessResponse.SUCCESS;
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
-                return UIHandler.InputProcessResponse.FAIL;
+                return ServiceHandler.InputProcessResponse.FAIL;
         }
     }
 
     @Override
     public void displayStartScreen() {
-        uiHandler.printHeader(book.getTitle());
-        uiHandler.printContent(book.getAuthorAndYearPrintFormat());
-        uiHandler.printContent(getOptonsPrintFormat());
+        serviceHandler.printHeader(book.getTitle());
+        serviceHandler.printContent(book.getAuthorAndYearPrintFormat());
+        serviceHandler.printContent(getOptonsPrintFormat());
     }
 
     private String getOptonsPrintFormat() {
