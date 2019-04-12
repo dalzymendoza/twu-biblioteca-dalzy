@@ -3,20 +3,20 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.repositories.BookRepository;
 import com.twu.biblioteca.representations.Book;
 
-public class ViewService extends ServiceManager {
+public class ViewBookService extends Service {
 
     private Book book;
-    private BookScreenManager bookScreenManager;
-    private CheckoutService checkoutService;
+    private BookLibraryService bookLibraryService;
+    private CheckoutBookService checkoutBookService;
     private UIHandler uiHandler;
 
-    public ViewService(UIHandler uiHandler, BookScreenManager bookScreenManager,
-                       BookRepository bookRepository, Book book) {
+    public ViewBookService(UIHandler uiHandler, BookLibraryService bookLibraryService,
+                           BookRepository bookRepository, Book book) {
         super(book.getTitle(), uiHandler);
         this.uiHandler = uiHandler;
         this.book = book;
-        this.bookScreenManager = bookScreenManager;
-        this.checkoutService = new CheckoutService(uiHandler, bookScreenManager,
+        this.bookLibraryService = bookLibraryService;
+        this.checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryService,
                                         this, bookRepository);
     }
 
@@ -24,11 +24,11 @@ public class ViewService extends ServiceManager {
     public UIHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "B":
-                uiHandler.setServiceManager(bookScreenManager);
+                uiHandler.setService(bookLibraryService);
                 return UIHandler.InputProcessResponse.SUCCESS;
             case "C":
-                uiHandler.setServiceManager(checkoutService);
-                checkoutService.setBook(book);
+                uiHandler.setService(checkoutBookService);
+                checkoutBookService.setBook(book);
                 return UIHandler.InputProcessResponse.SUCCESS;
             default:
                 return UIHandler.InputProcessResponse.FAIL;

@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
-public class CheckoutServiceTest {
+public class CheckoutBookServiceTest {
 
     @Captor
     public ArgumentCaptor<String> uiHandlerPrintUserActionResponseCaptor = ArgumentCaptor.forClass(String.class);
@@ -25,14 +25,14 @@ public class CheckoutServiceTest {
     public void shouldPrintSuccessIfCheckingOutAvailableBookWithValidId() {
         BookRepository bookRepository = mock(BookRepository.class);
         UIHandler uiHandler = mock(UIHandler.class);
-        BookScreenManager bookScreenManager = mock(BookScreenManager.class);
-        ViewService viewService = mock (ViewService.class);
+        BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
+        ViewBookService viewBookService = mock (ViewBookService.class);
 
-        CheckoutService checkoutService = new CheckoutService(uiHandler, bookScreenManager,
-                                                      viewService, bookRepository);
-        checkoutService.checkoutBook(1);
+        CheckoutBookService checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryServiceManager,
+                viewBookService, bookRepository);
+        checkoutBookService.checkoutBook(1);
         verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutService.SUCCESS));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutBookService.SUCCESS));
     }
 
     @Test
@@ -41,14 +41,14 @@ public class CheckoutServiceTest {
         BookRepository bookRepository = mock(BookRepository.class);
         doThrow(new UnavailableBookError()).when(bookRepository).checkoutBook(anyInt());
         UIHandler uiHandler = mock(UIHandler.class);
-        BookScreenManager bookScreenManager = mock(BookScreenManager.class);
-        ViewService viewService = mock (ViewService.class);
+        BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
+        ViewBookService viewBookService = mock (ViewBookService.class);
 
-        CheckoutService checkoutService = new CheckoutService(uiHandler, bookScreenManager,
-                viewService, bookRepository);
-        checkoutService.checkoutBook(1);
+        CheckoutBookService checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryServiceManager,
+                viewBookService, bookRepository);
+        checkoutBookService.checkoutBook(1);
         verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutService.NOT_AVAILABLE_BOOK));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutBookService.NOT_AVAILABLE_BOOK));
     }
 
     @Test
@@ -57,14 +57,14 @@ public class CheckoutServiceTest {
         BookRepository bookRepository = mock(BookRepository.class);
         doThrow(new NonexistingBookError()).when(bookRepository).checkoutBook(anyInt());
         UIHandler uiHandler = mock(UIHandler.class);
-        BookScreenManager bookScreenManager = mock(BookScreenManager.class);
-        ViewService viewService = mock (ViewService.class);
+        BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
+        ViewBookService viewBookService = mock (ViewBookService.class);
 
-        CheckoutService checkoutService = new CheckoutService(uiHandler, bookScreenManager,
-                viewService, bookRepository);
-        checkoutService.checkoutBook(1);
+        CheckoutBookService checkoutBookService = new CheckoutBookService(uiHandler, bookLibraryServiceManager,
+                viewBookService, bookRepository);
+        checkoutBookService.checkoutBook(1);
         verify(uiHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutService.NONEXISTING_BOOK));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutBookService.NONEXISTING_BOOK));
     }
 
     private List<Book> generateTestListOf3Books() {

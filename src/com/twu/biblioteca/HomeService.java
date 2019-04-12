@@ -1,23 +1,23 @@
 package com.twu.biblioteca;
 
-public class HomeScreenManager extends ServiceManager {
+public class HomeService extends Service {
 
     private static final String HEADER = "HOME";
-    private BookScreenManager bookScreenManager;
+    private BookLibraryService bookLibraryService;
 
-    public HomeScreenManager(UIHandler uiHandler) {
+    public HomeService(UIHandler uiHandler) {
         super(HEADER, uiHandler);
-        this.bookScreenManager = new BookScreenManager(this, uiHandler);
+        this.bookLibraryService = new BookLibraryService(this, uiHandler);
     }
 
     @Override
     public UIHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "B":
-                uiHandler.setServiceManager(bookScreenManager);
+                uiHandler.setService(bookLibraryService);
                 return UIHandler.InputProcessResponse.SUCCESS;
             case "M":
-                System.out.println("DO MOVIES");
+                System.out.println("Coming soon!");
                 return UIHandler.InputProcessResponse.SUCCESS;
             default:
                 return UIHandler.InputProcessResponse.FAIL;

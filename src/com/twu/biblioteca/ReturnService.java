@@ -4,7 +4,7 @@ import com.twu.biblioteca.errors.AvailableBookError;
 import com.twu.biblioteca.errors.NonexistingBookError;
 import com.twu.biblioteca.repositories.BookRepository;
 
-public class ReturnService extends ServiceManager {
+public class ReturnService extends Service {
 
     public static final String HEADER = "RETURN SERVICE";
 
@@ -13,12 +13,12 @@ public class ReturnService extends ServiceManager {
     public static final String ALREADY_AVAILABLE = "That book is not checked out.";
 
     private BookRepository bookRepository;
-    private BookScreenManager bookScreenManager;
+    private BookLibraryService bookLibraryService;
 
 
-    public ReturnService(UIHandler uiHandler, BookScreenManager bookScreenManager, BookRepository bookRepository) {
+    public ReturnService(UIHandler uiHandler, BookLibraryService bookLibraryService, BookRepository bookRepository) {
         super(HEADER, uiHandler);
-        this.bookScreenManager = bookScreenManager;
+        this.bookLibraryService = bookLibraryService;
         this.bookRepository = bookRepository;
     }
 
@@ -26,7 +26,7 @@ public class ReturnService extends ServiceManager {
     public UIHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "B":
-                uiHandler.setServiceManager(bookScreenManager);
+                uiHandler.setService(bookLibraryService);
                 return UIHandler.InputProcessResponse.SUCCESS;
             default:
                 try {

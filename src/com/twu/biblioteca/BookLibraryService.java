@@ -7,18 +7,18 @@ import com.twu.biblioteca.representations.Book;
 
 import java.util.List;
 
-public class BookScreenManager extends ServiceManager {
+public class BookLibraryService extends Service {
 
     private static final String HEADER = "BOOKS";
     public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any books at the moment.\n";
 
     private BookRepository bookRepository;
-    private HomeScreenManager homeScreenManager;
+    private HomeService homeService;
     private ReturnService returnService;
 
-    public BookScreenManager(HomeScreenManager homeScreenManager, UIHandler uiHandler) {
+    public BookLibraryService(HomeService homeService, UIHandler uiHandler) {
         super(HEADER, uiHandler);
-        this.homeScreenManager = homeScreenManager;
+        this.homeService = homeService;
         this.bookRepository = new SampleBookRepository();
         this.returnService = new ReturnService(uiHandler, this, this.bookRepository);
     }
@@ -27,16 +27,16 @@ public class BookScreenManager extends ServiceManager {
     public UIHandler.InputProcessResponse processInput(String input) {
         switch (input) {
             case "B":
-                uiHandler.setServiceManager(homeScreenManager);
+                uiHandler.setService(homeService);
                 return UIHandler.InputProcessResponse.SUCCESS;
             case "R":
                 System.out.println("Return Service");
-                uiHandler.setServiceManager(returnService);
+                uiHandler.setService(returnService);
                 return UIHandler.InputProcessResponse.SUCCESS;
             default:
                 try {
                     int bookId = Integer.parseInt(input);
-                    uiHandler.setServiceManager(new ViewService(uiHandler, this,
+                    uiHandler.setService(new ViewBookService(uiHandler, this,
                                                                 bookRepository, bookRepository.getBook(bookId)));
                     return UIHandler.InputProcessResponse.SUCCESS;
                 }

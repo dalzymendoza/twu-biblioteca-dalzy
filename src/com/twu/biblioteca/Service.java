@@ -1,11 +1,11 @@
 package com.twu.biblioteca;
 
-public abstract class ServiceManager {
+public abstract class Service {
 
     String header;
     UIHandler uiHandler;
 
-    public ServiceManager(String header, UIHandler uiHandler) {
+    public Service(String header, UIHandler uiHandler) {
         this.header = header;
         this.uiHandler = uiHandler;
     }

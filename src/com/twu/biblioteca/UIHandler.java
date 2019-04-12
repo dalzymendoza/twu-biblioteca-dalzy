@@ -10,27 +10,27 @@ public class UIHandler {
         SUCCESS, FAIL
     }
 
-    private ServiceManager serviceManager;
+    private Service service;
     private Scanner scanner;
 
     public UIHandler() {
         this.scanner = new Scanner(System.in);
     }
 
-    public UIHandler(ServiceManager serviceManager) {
-        this.serviceManager = serviceManager;
+    public UIHandler(Service service) {
+        this.service = service;
         this.scanner = new Scanner(System.in);
     }
 
     public void runCurrentService() {
-        if (serviceManager == null) {
+        if (service == null) {
             System.out.println("Sorry, no available service");
             return;
         }
-        serviceManager.displayStartScreen();
+        service.displayStartScreen();
         String optionString = scanner.next();
         while(!optionString.equals("Q")) {
-            InputProcessResponse response = serviceManager.processInput(optionString);
+            InputProcessResponse response = service.processInput(optionString);
             switch(response) {
                 case SUCCESS:
                     break;
@@ -38,7 +38,7 @@ public class UIHandler {
                     printUserActionRespone("Invalid input");
                     break;
             }
-            serviceManager.displayStartScreen();
+            service.displayStartScreen();
             optionString = scanner.next();
         }
         quit();
@@ -69,7 +69,7 @@ public class UIHandler {
         System.out.println(RESPONSE_TO_USER_ACTION_BULLET + content + RESPONSE_TO_USER_ACTION_BULLET + "\n");
     }
 
-    public void setServiceManager(ServiceManager serviceManager) {
-        this.serviceManager = serviceManager;
+    public void setService(Service service) {
+        this.service = service;
     }
 }
