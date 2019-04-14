@@ -38,7 +38,7 @@ public class ViewBookService extends Service {
     @Override
     public void displayStartScreen() {
         serviceHandler.printHeader(book.getTitle());
-        serviceHandler.printContent(book.getAuthorAndYearPrintFormat());
+        serviceHandler.printContent(book.getExtraDetailsPrintFormat());
         serviceHandler.printContent(getOptonsPrintFormat());
     }
 

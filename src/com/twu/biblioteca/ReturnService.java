@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.AvailableBookError;
-import com.twu.biblioteca.errors.NonexistingBookError;
+import com.twu.biblioteca.errors.AvailableLibraryItemError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemError;
 import com.twu.biblioteca.repositories.BookRepository;
 
 public class ReturnService extends Service {
@@ -58,10 +58,10 @@ public class ReturnService extends Service {
             bookRepository.returnBook(id);
             serviceHandler.printUserActionRespone(SUCCESS);
         }
-        catch (NonexistingBookError e) {
+        catch (NonexistingLibraryItemError e) {
             serviceHandler.printUserActionRespone(NON_EXISTING_BOOK);
         }
-        catch (AvailableBookError e) {
+        catch (AvailableLibraryItemError e) {
             serviceHandler.printUserActionRespone(ALREADY_AVAILABLE);
         }
     }

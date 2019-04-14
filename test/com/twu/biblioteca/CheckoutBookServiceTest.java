@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.NonexistingBookError;
-import com.twu.biblioteca.errors.UnavailableBookError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemError;
+import com.twu.biblioteca.errors.UnavailableLibraryItemError;
 import com.twu.biblioteca.repositories.BookRepository;
 import com.twu.biblioteca.representations.Book;
 import org.junit.Test;
@@ -37,9 +37,9 @@ public class CheckoutBookServiceTest {
 
     @Test
     public void shouldPrintNotAvailableIfCheckingOutUnavailableBook()
-            throws NonexistingBookError, UnavailableBookError {
+            throws NonexistingLibraryItemError, UnavailableLibraryItemError {
         BookRepository bookRepository = mock(BookRepository.class);
-        doThrow(new UnavailableBookError()).when(bookRepository).checkoutBook(anyInt());
+        doThrow(new UnavailableLibraryItemError()).when(bookRepository).checkoutBook(anyInt());
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         ViewBookService viewBookService = mock (ViewBookService.class);
@@ -53,9 +53,9 @@ public class CheckoutBookServiceTest {
 
     @Test
     public void shouldPrintNonExistingBookIfCheckingOutWithNonexistingBookId()
-            throws NonexistingBookError, UnavailableBookError  {
+            throws NonexistingLibraryItemError, UnavailableLibraryItemError {
         BookRepository bookRepository = mock(BookRepository.class);
-        doThrow(new NonexistingBookError()).when(bookRepository).checkoutBook(anyInt());
+        doThrow(new NonexistingLibraryItemError()).when(bookRepository).checkoutBook(anyInt());
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         ViewBookService viewBookService = mock (ViewBookService.class);

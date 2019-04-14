@@ -1,8 +1,8 @@
 package com.twu.biblioteca.repositories;
 
-import com.twu.biblioteca.errors.AvailableBookError;
-import com.twu.biblioteca.errors.NonexistingBookError;
-import com.twu.biblioteca.errors.UnavailableBookError;
+import com.twu.biblioteca.errors.AvailableLibraryItemError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemError;
+import com.twu.biblioteca.errors.UnavailableLibraryItemError;
 import com.twu.biblioteca.representations.Book;
 
 import java.time.Year;
@@ -25,29 +25,29 @@ public class SampleBookRepository extends BookRepository {
     }
 
     @Override
-    public void checkoutBook(int id) throws NonexistingBookError, UnavailableBookError {
+    public void checkoutBook(int id) throws NonexistingLibraryItemError, UnavailableLibraryItemError {
         if (books.containsKey(id)) {
             books.get(id).checkout();
         }
         else {
-            throw new NonexistingBookError();
+            throw new NonexistingLibraryItemError();
         }
     }
 
     @Override
-    public Book getBook(int id) throws NonexistingBookError {
+    public Book getBook(int id) throws NonexistingLibraryItemError {
         if (books.containsKey(id)) {
             return books.get(id);
         }
-        throw new NonexistingBookError();
+        throw new NonexistingLibraryItemError();
     }
 
     @Override
-    public void returnBook(int id) throws NonexistingBookError, AvailableBookError {
+    public void returnBook(int id) throws NonexistingLibraryItemError, AvailableLibraryItemError {
         if (books.containsKey(id)) {
             Book book = books.get(id);
             if (book.getAvailability()) {
-                throw new AvailableBookError();
+                throw new AvailableLibraryItemError();
             }
             else {
                 book.returnBook();
@@ -55,7 +55,7 @@ public class SampleBookRepository extends BookRepository {
 
         }
         else {
-            throw new NonexistingBookError();
+            throw new NonexistingLibraryItemError();
         }
     }
 }

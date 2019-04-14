@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.AvailableBookError;
-import com.twu.biblioteca.errors.NonexistingBookError;
+import com.twu.biblioteca.errors.AvailableLibraryItemError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemError;
 import com.twu.biblioteca.repositories.BookRepository;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,11 +31,11 @@ public class ReturnServiceTest {
 
     @Test
     public void shouldPrintNonexistingBookResponseIfReturningBookUsingInvalidBookId()
-            throws NonexistingBookError, AvailableBookError{
+            throws NonexistingLibraryItemError, AvailableLibraryItemError {
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         BookRepository bookRepository = mock(BookRepository.class);
-        doThrow(new NonexistingBookError()).when(bookRepository).returnBook(anyInt());
+        doThrow(new NonexistingLibraryItemError()).when(bookRepository).returnBook(anyInt());
 
         ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
         returnService.returnBook(1);
@@ -45,11 +45,11 @@ public class ReturnServiceTest {
 
     @Test
     public void shouldPrintAlreadyAvailableBookResponseIfReturningBookThatIsntCheckedOut()
-            throws NonexistingBookError, AvailableBookError {
+            throws NonexistingLibraryItemError, AvailableLibraryItemError {
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
         BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
         BookRepository bookRepository = mock(BookRepository.class);
-        doThrow(new AvailableBookError()).when(bookRepository).returnBook(anyInt());
+        doThrow(new AvailableLibraryItemError()).when(bookRepository).returnBook(anyInt());
 
         ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
         returnService.returnBook(1);

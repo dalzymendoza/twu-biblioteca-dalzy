@@ -1,6 +1,6 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.NonexistingBookError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemError;
 import com.twu.biblioteca.repositories.BookRepository;
 import com.twu.biblioteca.repositories.SampleBookRepository;
 import com.twu.biblioteca.representations.Book;
@@ -40,7 +40,7 @@ public class BookLibraryService extends Service {
                                                                 bookRepository, bookRepository.getBook(bookId)));
                     return ServiceHandler.InputProcessResponse.SUCCESS;
                 }
-                catch (NumberFormatException | NonexistingBookError e) {
+                catch (NumberFormatException | NonexistingLibraryItemError e) {
                     return ServiceHandler.InputProcessResponse.FAIL;
                 }
         }
@@ -71,7 +71,7 @@ public class BookLibraryService extends Service {
         StringBuilder allBooksPrintFormat = new StringBuilder();
         for (Book book : books){
             if (book.getAvailability()) {
-                allBooksPrintFormat.append(book.getBookOptionPrintFormat() + "\n");
+                allBooksPrintFormat.append(book.getLibraryItemOptionPrintFormat() + "\n");
             }
         }
         return allBooksPrintFormat.toString();

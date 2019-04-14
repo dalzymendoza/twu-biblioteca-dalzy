@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.NonexistingBookError;
-import com.twu.biblioteca.errors.UnavailableBookError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemError;
+import com.twu.biblioteca.errors.UnavailableLibraryItemError;
 import com.twu.biblioteca.repositories.BookRepository;
 import com.twu.biblioteca.representations.Book;
 
@@ -69,10 +69,10 @@ public class CheckoutBookService extends Service {
             bookRepository.checkoutBook(id);
             serviceHandler.printUserActionRespone(SUCCESS);
         }
-        catch (UnavailableBookError e) {
+        catch (UnavailableLibraryItemError e) {
             serviceHandler.printUserActionRespone(NOT_AVAILABLE_BOOK);
         }
-        catch (NonexistingBookError e) {
+        catch (NonexistingLibraryItemError e) {
             serviceHandler.printUserActionRespone(NONEXISTING_BOOK);
         }
     }
