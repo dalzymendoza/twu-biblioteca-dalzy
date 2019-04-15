@@ -28,7 +28,7 @@ public class ServiceHandler {
             return;
         }
         service.displayStartScreen();
-        String optionString = scanner.next();
+        String optionString = scanner.nextLine();
         while(!optionString.equals("Q")) {
             InputProcessResponse response = service.processInput(optionString);
             switch(response) {
@@ -39,7 +39,7 @@ public class ServiceHandler {
                     break;
             }
             service.displayStartScreen();
-            optionString = scanner.next();
+            optionString = scanner.nextLine();
         }
         quit();
     }

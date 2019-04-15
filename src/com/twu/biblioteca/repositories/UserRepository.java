@@ -18,7 +18,7 @@ public class UserRepository {
     }
 
     public User login(String username, String password) throws NoUserFoundException{
-        if (userMap.containsKey(username) && userMap.get(username).validatePassowrd(password)) {
+        if (userMap.containsKey(username) && userMap.get(username).validatePassword(password)) {
             return userMap.get(username);
         }
         else {

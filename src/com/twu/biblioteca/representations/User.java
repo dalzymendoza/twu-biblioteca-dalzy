@@ -9,8 +9,8 @@ public class User {
         this.password = password;
     }
 
-    public boolean validatePassowrd(String password) {
-        if (this.password == password) {
+    public boolean validatePassword(String password) {
+        if (this.password.equals(password)) {
             return true;
         }
         return false;
