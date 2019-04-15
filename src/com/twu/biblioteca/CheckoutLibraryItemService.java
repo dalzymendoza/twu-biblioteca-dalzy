@@ -4,6 +4,7 @@ import com.twu.biblioteca.exceptions.NonexistingLibraryItemException;
 import com.twu.biblioteca.exceptions.UnavailableLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
 import com.twu.biblioteca.representations.LibraryItem;
+import com.twu.biblioteca.representations.User;
 
 
 public class CheckoutLibraryItemService extends Service {
@@ -31,17 +32,30 @@ public class CheckoutLibraryItemService extends Service {
 
     @Override
     public ServiceHandler.InputProcessResponse processInput(String input) {
-        switch(input) {
-            case "Y":
-                checkoutLibraryItem(libraryItem.getId());
-                serviceHandler.setService(libraryService);
-                return ServiceHandler.InputProcessResponse.SUCCESS;
-            case "N":
-                serviceHandler.setService(viewLibraryItemService);
-                return ServiceHandler.InputProcessResponse.SUCCESS;
-            default:
-                return ServiceHandler.InputProcessResponse.FAIL;
+        User.UserPermissions userPermissions = serviceHandler.getCurrentUserPermissions();
+        if (userPermissions == User.UserPermissions.CUSTOMER || userPermissions == User.UserPermissions.LIBRARIAN) {
+            switch (input) {
+                case "Y":
+                    checkoutLibraryItem(libraryItem.getId());
+                    serviceHandler.setService(libraryService);
+                    return ServiceHandler.InputProcessResponse.SUCCESS;
+                case "N":
+                    serviceHandler.setService(viewLibraryItemService);
+                    return ServiceHandler.InputProcessResponse.SUCCESS;
+                default:
+                    return ServiceHandler.InputProcessResponse.FAIL;
+            }
         }
+        else if (userPermissions == User.UserPermissions.NON_CUSTOMER) {
+            switch (input) {
+                case "B":
+                    serviceHandler.setService(viewLibraryItemService);
+                    return ServiceHandler.InputProcessResponse.SUCCESS;
+                default:
+                    return ServiceHandler.InputProcessResponse.FAIL;
+            }
+        }
+        return ServiceHandler.InputProcessResponse.FAIL;
     }
 
     @Override
@@ -59,8 +73,19 @@ public class CheckoutLibraryItemService extends Service {
 
     private String getOptionsPrintFormat() {
         StringBuilder optionsPrintFormat = new StringBuilder();
-        optionsPrintFormat.append("[Y] Yes, check out.\n");
-        optionsPrintFormat.append("[N] No. \n");
+        User.UserPermissions userPermissions = serviceHandler.getCurrentUserPermissions();
+        switch (userPermissions) {
+            case NON_CUSTOMER:
+                optionsPrintFormat.append("[B] Back to Library Item Screen\n\n");
+                optionsPrintFormat.append("Checking out is only allowed for registered library users.\n");
+                break;
+            case CUSTOMER:
+            case LIBRARIAN:
+                optionsPrintFormat.append("[Y] Yes, check out.\n");
+                optionsPrintFormat.append("[N] No. \n");
+                break;
+        }
+
         return optionsPrintFormat.toString();
     }
 

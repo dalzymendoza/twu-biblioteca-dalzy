@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.exceptions.AvailableLibraryItemException;
 import com.twu.biblioteca.exceptions.NonexistingLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
+import com.twu.biblioteca.representations.User;
 
 public class ReturnLibraryItemService extends Service {
 
@@ -29,6 +30,9 @@ public class ReturnLibraryItemService extends Service {
                 serviceHandler.setService(libraryService);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
+                if (serviceHandler.getCurrentUserPermissions() == User.UserPermissions.NON_CUSTOMER) {
+                    return ServiceHandler.InputProcessResponse.FAIL;
+                }
                 try {
                     int bookId = Integer.parseInt(input);
                     returnBook(bookId);
@@ -44,7 +48,16 @@ public class ReturnLibraryItemService extends Service {
     public void displayStartScreen() {
         serviceHandler.printHeader(HEADER);
         serviceHandler.printContent(getOptionsPrintFormat());
-        serviceHandler.printContent("Please type the ID of the library item you're returning: ");
+        User.UserPermissions userPermissions = serviceHandler.getCurrentUserPermissions();
+        switch (userPermissions) {
+            case NON_CUSTOMER:
+                serviceHandler.printContent("Returning is only allowed for registered library users.");
+                break;
+            case CUSTOMER:
+            case LIBRARIAN:
+                serviceHandler.printContent("Please type the ID of the library item you're returning: ");
+                break;
+        }
     }
 
     private String getOptionsPrintFormat() {

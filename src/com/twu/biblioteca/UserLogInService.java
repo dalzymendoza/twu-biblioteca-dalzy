@@ -12,7 +12,7 @@ public class UserLogInService extends Service{
 
     public UserLogInService(ServiceHandler serviceHandler) {
         super(HEADER, serviceHandler);
-        this.homeService = new HomeService(serviceHandler);
+        this.homeService = new HomeService(serviceHandler, this);
         this.userRepository = new UserRepository();
     }
 
@@ -24,13 +24,16 @@ public class UserLogInService extends Service{
                 String password = serviceHandler.requestInput("Password");
                 try {
                     User user = userRepository.login(username, password);
+                    serviceHandler.setCurrentUser(user);
                     serviceHandler.setService(homeService);
                     return ServiceHandler.InputProcessResponse.SUCCESS;
                 }
                 catch (NoUserFoundException e) {
                     return ServiceHandler.InputProcessResponse.FAIL;
                 }
-
+            case "C":
+                serviceHandler.setService(homeService);
+                return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
                 return ServiceHandler.InputProcessResponse.FAIL;
         }
@@ -48,6 +51,7 @@ public class UserLogInService extends Service{
     private String getOptionsPrintFormat() {
         StringBuilder optionsPrintFormat = new StringBuilder();
         optionsPrintFormat.append("[L] Login\n");
+        optionsPrintFormat.append("[C] Continue as guest\n");
         optionsPrintFormat.append("[Q] Quit application\n");
         return optionsPrintFormat.toString();
     }

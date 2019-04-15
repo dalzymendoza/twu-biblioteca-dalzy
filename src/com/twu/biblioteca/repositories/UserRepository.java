@@ -12,9 +12,11 @@ public class UserRepository {
 
     public UserRepository() {
         userMap = new HashMap<>();
-        userMap.put("spider-man", new User("spider-man", "spider-man"));
-        userMap.put("gwen", new User("gwen", "gwen"));
-        userMap.put("peniparker", new User("peniparker", "peniparker"));
+        userMap.put("spider-man", new User("spider-man", "spider-man", User.UserPermissions.CUSTOMER));
+        userMap.put("gwen", new User("gwen", "gwen", User.UserPermissions.CUSTOMER));
+        userMap.put("peniparker", new User("peniparker", "peniparker", User.UserPermissions.CUSTOMER));
+        userMap.put("librarian", new User("librarian", "librarian",
+                                            User.UserPermissions.LIBRARIAN));
     }
 
     public User login(String username, String password) throws NoUserFoundException{

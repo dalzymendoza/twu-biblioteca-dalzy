@@ -1,5 +1,7 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.representations.User;
+
 import java.util.Scanner;
 
 public class ServiceHandler {
@@ -10,15 +12,18 @@ public class ServiceHandler {
         SUCCESS, FAIL
     }
 
+    private User currentUser;
     private Service service;
     private Scanner scanner;
 
     public ServiceHandler() {
         this.scanner = new Scanner(System.in);
+        this.currentUser = null;
     }
 
     public ServiceHandler(Service service) {
         this.service = service;
+        this.currentUser = null;
         this.scanner = new Scanner(System.in);
     }
 
@@ -77,5 +82,20 @@ public class ServiceHandler {
 
     public void setService(Service service) {
         this.service = service;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public User.UserPermissions getCurrentUserPermissions() {
+        if (currentUser != null) {
+            return currentUser.getUserPermissions();
+        }
+        return User.UserPermissions.NON_CUSTOMER;
     }
 }
