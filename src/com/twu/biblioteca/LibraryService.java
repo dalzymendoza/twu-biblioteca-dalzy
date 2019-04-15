@@ -3,12 +3,13 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.exceptions.NonexistingLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
 import com.twu.biblioteca.representations.LibraryItem;
+import com.twu.biblioteca.representations.User;
 
 import java.util.List;
 
 public class LibraryService extends Service {
 
-    public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any library items at the moment.\n";
+    public static final String NO_ITEMS_MESSAGE = "Sorry, we don't have any library items at the moment.\n";
 
     private LibraryRepository libraryRepository;
     private HomeService homeService;
@@ -29,9 +30,16 @@ public class LibraryService extends Service {
                 serviceHandler.setService(homeService);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
             case "R":
-                System.out.println("Return Service");
                 serviceHandler.setService(returnLibraryItemService);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
+            case "C":
+                User.UserPermissions userPermissions = serviceHandler.getCurrentUserPermissions();
+                if (userPermissions == User.UserPermissions.LIBRARIAN) {
+                    serviceHandler.setService(new CheckedOutAdminService(serviceHandler, this,
+                            libraryRepository));
+                    return ServiceHandler.InputProcessResponse.SUCCESS;
+                }
+                return ServiceHandler.InputProcessResponse.FAIL;
             default:
                 try {
                     int bookId = Integer.parseInt(input);
@@ -51,7 +59,7 @@ public class LibraryService extends Service {
             return;
         }
         serviceHandler.printHeader(header);
-        serviceHandler.printContent(getAllBooksPrintFormat());
+        serviceHandler.printContent(getAvailableLibraryItemsPrintFormat());
         serviceHandler.printContent(getOptionsPrintFormat());
     }
 
@@ -59,20 +67,24 @@ public class LibraryService extends Service {
         StringBuilder optionsPrintFormat = new StringBuilder();
         optionsPrintFormat.append("[B] Back to Home Screen\n");
         optionsPrintFormat.append("[R] Return a Library Item\n");
+        User.UserPermissions userPermissions = serviceHandler.getCurrentUserPermissions();
+        if (userPermissions == User.UserPermissions.LIBRARIAN) {
+            optionsPrintFormat.append("[C] View Checked Out Items\n");
+        }
         return optionsPrintFormat.toString();
     }
 
-    private String getAllBooksPrintFormat() {
+    private String getAvailableLibraryItemsPrintFormat() {
         List<LibraryItem> libraryItems = libraryRepository.viewAllLibraryItems();
         if(libraryItems.size() == 0) {
-            return NO_BOOKS_MESSAGE;
+            return NO_ITEMS_MESSAGE;
         }
-        StringBuilder allBooksPrintFormat = new StringBuilder();
+        StringBuilder allItemsPrintFormat = new StringBuilder("Available items: \n");
         for (LibraryItem libraryItem : libraryItems){
             if (libraryItem.getAvailability()) {
-                allBooksPrintFormat.append(libraryItem.getLibraryItemOptionPrintFormat() + "\n");
+                allItemsPrintFormat.append(libraryItem.getLibraryItemOptionPrintFormat() + "\n");
             }
         }
-        return allBooksPrintFormat.toString();
+        return allItemsPrintFormat.toString();
     }
 }

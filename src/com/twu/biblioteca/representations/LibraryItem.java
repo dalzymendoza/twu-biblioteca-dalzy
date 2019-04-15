@@ -31,6 +31,10 @@ public abstract class LibraryItem {
         return title;
     }
 
+    public User getCheckedOutBy() {
+        return checkedOutBy;
+    }
+
     public int getId() {
         return id;
     }
@@ -53,5 +57,9 @@ public abstract class LibraryItem {
             this.availability = true;
             this.checkedOutBy = null;
         }
+    }
+
+    public String getAdminDetailsPrintFormat() {
+        return "Title: " + title + "\n" + "Checked out by: " + checkedOutBy.getUsername() + "\n";
     }
 }

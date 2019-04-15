@@ -29,6 +29,10 @@ public class User {
         return false;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public UserPermissions getUserPermissions() {
         return userPermissions;
     }
