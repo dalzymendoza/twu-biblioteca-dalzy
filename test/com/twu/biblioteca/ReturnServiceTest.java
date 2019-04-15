@@ -2,7 +2,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.errors.AvailableLibraryItemError;
 import com.twu.biblioteca.errors.NonexistingLibraryItemError;
-import com.twu.biblioteca.repositories.BookRepository;
+import com.twu.biblioteca.repositories.LibraryRepository;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -20,10 +20,10 @@ public class ReturnServiceTest {
     @Test
     public void shouldPrintSuccessResponseIfReturningACheckedOutBookUsingValidBookId() {
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
-        BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
-        BookRepository bookRepository = mock(BookRepository.class);
+        LibraryService bookLibraryServiceManager = mock(LibraryService.class);
+        LibraryRepository libraryRepository = mock(LibraryRepository.class);
 
-        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
+        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, libraryRepository);
         returnService.returnBook(1);
         verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
         assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.SUCCESS));
@@ -33,28 +33,28 @@ public class ReturnServiceTest {
     public void shouldPrintNonexistingBookResponseIfReturningBookUsingInvalidBookId()
             throws NonexistingLibraryItemError, AvailableLibraryItemError {
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
-        BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
-        BookRepository bookRepository = mock(BookRepository.class);
-        doThrow(new NonexistingLibraryItemError()).when(bookRepository).returnBook(anyInt());
+        LibraryService bookLibraryServiceManager = mock(LibraryService.class);
+        LibraryRepository libraryRepository = mock(LibraryRepository.class);
+        doThrow(new NonexistingLibraryItemError()).when(libraryRepository).returnLibraryItem(anyInt());
 
-        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
+        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, libraryRepository);
         returnService.returnBook(1);
         verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.NON_EXISTING_BOOK));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.NON_EXISTING_LIBRARY_ITEM));
     }
 
     @Test
     public void shouldPrintAlreadyAvailableBookResponseIfReturningBookThatIsntCheckedOut()
             throws NonexistingLibraryItemError, AvailableLibraryItemError {
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
-        BookLibraryService bookLibraryServiceManager = mock(BookLibraryService.class);
-        BookRepository bookRepository = mock(BookRepository.class);
-        doThrow(new AvailableLibraryItemError()).when(bookRepository).returnBook(anyInt());
+        LibraryService bookLibraryServiceManager = mock(LibraryService.class);
+        LibraryRepository libraryRepository = mock(LibraryRepository.class);
+        doThrow(new AvailableLibraryItemError()).when(libraryRepository).returnLibraryItem(anyInt());
 
-        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, bookRepository);
+        ReturnService returnService = new ReturnService(serviceHandler, bookLibraryServiceManager, libraryRepository);
         returnService.returnBook(1);
         verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.ALREADY_AVAILABLE));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(ReturnService.ALREADY_AVAILABLE_LIBRARY_ITEM));
     }
 }
 

@@ -1,26 +1,25 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.errors.NonexistingLibraryItemError;
-import com.twu.biblioteca.repositories.BookRepository;
-import com.twu.biblioteca.repositories.SampleBookRepository;
-import com.twu.biblioteca.representations.Book;
+import com.twu.biblioteca.repositories.LibraryRepository;
+import com.twu.biblioteca.repositories.SampleBookLibraryRepository;
+import com.twu.biblioteca.representations.LibraryItem;
 
 import java.util.List;
 
-public class BookLibraryService extends Service {
+public class LibraryService extends Service {
 
-    private static final String HEADER = "BOOKS";
     public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any books at the moment.\n";
 
-    private BookRepository bookRepository;
+    private LibraryRepository libraryRepository;
     private HomeService homeService;
     private ReturnService returnService;
 
-    public BookLibraryService(HomeService homeService, ServiceHandler serviceHandler) {
-        super(HEADER, serviceHandler);
+    public LibraryService(String header, HomeService homeService, ServiceHandler serviceHandler) {
+        super(header, serviceHandler);
         this.homeService = homeService;
-        this.bookRepository = new SampleBookRepository();
-        this.returnService = new ReturnService(serviceHandler, this, this.bookRepository);
+        this.libraryRepository = new SampleBookLibraryRepository();
+        this.returnService = new ReturnService(serviceHandler, this, this.libraryRepository);
     }
 
     @Override
@@ -36,8 +35,8 @@ public class BookLibraryService extends Service {
             default:
                 try {
                     int bookId = Integer.parseInt(input);
-                    serviceHandler.setService(new ViewBookService(serviceHandler, this,
-                                                                bookRepository, bookRepository.getBook(bookId)));
+                    serviceHandler.setService(new ViewLibraryItemService(serviceHandler, this,
+                            libraryRepository, libraryRepository.getLibraryItem(bookId)));
                     return ServiceHandler.InputProcessResponse.SUCCESS;
                 }
                 catch (NumberFormatException | NonexistingLibraryItemError e) {
@@ -51,7 +50,7 @@ public class BookLibraryService extends Service {
         if(serviceHandler == null) {
             return;
         }
-        serviceHandler.printHeader(HEADER);
+        serviceHandler.printHeader(header);
         serviceHandler.printContent(getAllBooksPrintFormat());
         serviceHandler.printContent(getOptionsPrintFormat());
     }
@@ -64,14 +63,14 @@ public class BookLibraryService extends Service {
     }
 
     private String getAllBooksPrintFormat() {
-        List<Book> books = bookRepository.viewAllBooks();
-        if(books.size() == 0) {
+        List<LibraryItem> libraryItems = libraryRepository.viewAllLibraryItems();
+        if(libraryItems.size() == 0) {
             return NO_BOOKS_MESSAGE;
         }
         StringBuilder allBooksPrintFormat = new StringBuilder();
-        for (Book book : books){
-            if (book.getAvailability()) {
-                allBooksPrintFormat.append(book.getLibraryItemOptionPrintFormat() + "\n");
+        for (LibraryItem libraryItem : libraryItems){
+            if (libraryItem.getAvailability()) {
+                allBooksPrintFormat.append(libraryItem.getLibraryItemOptionPrintFormat() + "\n");
             }
         }
         return allBooksPrintFormat.toString();

@@ -2,31 +2,31 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.errors.AvailableLibraryItemError;
 import com.twu.biblioteca.errors.NonexistingLibraryItemError;
-import com.twu.biblioteca.repositories.BookRepository;
+import com.twu.biblioteca.repositories.LibraryRepository;
 
 public class ReturnService extends Service {
 
     public static final String HEADER = "RETURN SERVICE";
 
-    public static final String SUCCESS = "Thank you! Book has been successfully returned!";
-    public static final String NON_EXISTING_BOOK = "Sorry, there is no such book in our system.";
-    public static final String ALREADY_AVAILABLE = "That book is not checked out.";
+    public static final String SUCCESS = "Thank you! Library item has been successfully returned!";
+    public static final String NON_EXISTING_LIBRARY_ITEM = "Sorry, there is no such library item in our system.";
+    public static final String ALREADY_AVAILABLE_LIBRARY_ITEM = "That library item is not checked out.";
 
-    private BookRepository bookRepository;
-    private BookLibraryService bookLibraryService;
+    private LibraryRepository libraryRepository;
+    private LibraryService libraryService;
 
 
-    public ReturnService(ServiceHandler serviceHandler, BookLibraryService bookLibraryService, BookRepository bookRepository) {
+    public ReturnService(ServiceHandler serviceHandler, LibraryService libraryService, LibraryRepository libraryRepository) {
         super(HEADER, serviceHandler);
-        this.bookLibraryService = bookLibraryService;
-        this.bookRepository = bookRepository;
+        this.libraryService = libraryService;
+        this.libraryRepository = libraryRepository;
     }
 
     @Override
     public ServiceHandler.InputProcessResponse processInput(String input) {
         switch(input) {
             case "B":
-                serviceHandler.setService(bookLibraryService);
+                serviceHandler.setService(libraryService);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
                 try {
@@ -44,25 +44,25 @@ public class ReturnService extends Service {
     public void displayStartScreen() {
         serviceHandler.printHeader(HEADER);
         serviceHandler.printContent(getOptionsPrintFormat());
-        serviceHandler.printContent("Please type the ID of the book you're returning: ");
+        serviceHandler.printContent("Please type the ID of the library item you're returning: ");
     }
 
     private String getOptionsPrintFormat() {
         StringBuilder optionsPrintFormat = new StringBuilder();
-        optionsPrintFormat.append("[B] Back to Books screen\n");
+        optionsPrintFormat.append("[B] Back to Library screen\n");
         return optionsPrintFormat.toString();
     }
 
     public void returnBook(int id) {
         try {
-            bookRepository.returnBook(id);
+            libraryRepository.returnLibraryItem(id);
             serviceHandler.printUserActionRespone(SUCCESS);
         }
         catch (NonexistingLibraryItemError e) {
-            serviceHandler.printUserActionRespone(NON_EXISTING_BOOK);
+            serviceHandler.printUserActionRespone(NON_EXISTING_LIBRARY_ITEM);
         }
         catch (AvailableLibraryItemError e) {
-            serviceHandler.printUserActionRespone(ALREADY_AVAILABLE);
+            serviceHandler.printUserActionRespone(ALREADY_AVAILABLE_LIBRARY_ITEM);
         }
     }
 }
