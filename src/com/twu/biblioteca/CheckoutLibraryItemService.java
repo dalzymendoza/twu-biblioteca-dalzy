@@ -91,7 +91,7 @@ public class CheckoutLibraryItemService extends Service {
 
     public void checkoutLibraryItem(int id) {
         try {
-            libraryRepository.checkoutLibraryItem(id);
+            libraryRepository.checkoutLibraryItem(id, serviceHandler.getCurrentUser());
             serviceHandler.printUserActionRespone(SUCCESS);
         }
         catch (UnavailableLibraryItemException e) {

@@ -4,6 +4,7 @@ import com.twu.biblioteca.exceptions.AvailableLibraryItemException;
 import com.twu.biblioteca.exceptions.NonexistingLibraryItemException;
 import com.twu.biblioteca.exceptions.UnavailableLibraryItemException;
 import com.twu.biblioteca.representations.LibraryItem;
+import com.twu.biblioteca.representations.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,9 +27,9 @@ public abstract class LibraryRepository {
         return new ArrayList<>(libraryItemMap.values());
     }
 
-    public void checkoutLibraryItem(int id) throws NonexistingLibraryItemException, UnavailableLibraryItemException {
+    public void checkoutLibraryItem(int id, User checkedOutBy) throws NonexistingLibraryItemException, UnavailableLibraryItemException {
         if (libraryItemMap.containsKey(id)) {
-            libraryItemMap.get(id).checkoutItem();
+            libraryItemMap.get(id).checkoutItem(checkedOutBy);
         }
         else {
             throw new NonexistingLibraryItemException();

@@ -8,11 +8,13 @@ public abstract class LibraryItem {
     private int id;
     private String title;
     private boolean availability;
+    private User checkedOutBy;
 
     public LibraryItem(int id, String title) {
         this.id = id;
         this.title = title;
         this.availability = true;
+        this.checkedOutBy = null;
     }
 
     public abstract String getExtraDetailsPrintFormat();
@@ -33,9 +35,10 @@ public abstract class LibraryItem {
         return id;
     }
 
-    public void checkoutItem() throws UnavailableLibraryItemException {
+    public void checkoutItem(User checkedOutBy) throws UnavailableLibraryItemException {
         if(availability) {
             this.availability = false;
+            this.checkedOutBy = checkedOutBy;
         }
         else {
             throw new UnavailableLibraryItemException();
@@ -48,6 +51,7 @@ public abstract class LibraryItem {
         }
         else {
             this.availability = true;
+            this.checkedOutBy = null;
         }
     }
 }
