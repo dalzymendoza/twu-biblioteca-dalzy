@@ -27,7 +27,7 @@ public class SampleBookRepository extends BookRepository {
     @Override
     public void checkoutBook(int id) throws NonexistingLibraryItemError, UnavailableLibraryItemError {
         if (books.containsKey(id)) {
-            books.get(id).checkout();
+            books.get(id).checkoutItem();
         }
         else {
             throw new NonexistingLibraryItemError();
@@ -50,7 +50,7 @@ public class SampleBookRepository extends BookRepository {
                 throw new AvailableLibraryItemError();
             }
             else {
-                book.returnBook();
+                book.returnItem();
             }
 
         }
