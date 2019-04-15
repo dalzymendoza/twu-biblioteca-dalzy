@@ -1,8 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.NonexistingLibraryItemError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
-import com.twu.biblioteca.repositories.SampleBookLibraryRepository;
 import com.twu.biblioteca.representations.LibraryItem;
 
 import java.util.List;
@@ -13,14 +12,14 @@ public class LibraryService extends Service {
 
     private LibraryRepository libraryRepository;
     private HomeService homeService;
-    private ReturnService returnService;
+    private ReturnLibraryItemService returnLibraryItemService;
 
     public LibraryService(String header, HomeService homeService, ServiceHandler serviceHandler,
                           LibraryRepository libraryRepository) {
         super(header, serviceHandler);
         this.homeService = homeService;
         this.libraryRepository = libraryRepository;
-        this.returnService = new ReturnService(serviceHandler, this, this.libraryRepository);
+        this.returnLibraryItemService = new ReturnLibraryItemService(serviceHandler, this, this.libraryRepository);
     }
 
     @Override
@@ -31,7 +30,7 @@ public class LibraryService extends Service {
                 return ServiceHandler.InputProcessResponse.SUCCESS;
             case "R":
                 System.out.println("Return Service");
-                serviceHandler.setService(returnService);
+                serviceHandler.setService(returnLibraryItemService);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
                 try {
@@ -40,7 +39,7 @@ public class LibraryService extends Service {
                             libraryRepository, libraryRepository.getLibraryItem(bookId)));
                     return ServiceHandler.InputProcessResponse.SUCCESS;
                 }
-                catch (NumberFormatException | NonexistingLibraryItemError e) {
+                catch (NumberFormatException | NonexistingLibraryItemException e) {
                     return ServiceHandler.InputProcessResponse.FAIL;
                 }
         }

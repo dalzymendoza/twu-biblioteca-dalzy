@@ -1,7 +1,7 @@
 package com.twu.biblioteca.representations;
 
-import com.twu.biblioteca.errors.AvailableLibraryItemError;
-import com.twu.biblioteca.errors.UnavailableLibraryItemError;
+import com.twu.biblioteca.errors.AvailableLibraryItemException;
+import com.twu.biblioteca.errors.UnavailableLibraryItemException;
 
 public abstract class LibraryItem {
 
@@ -33,18 +33,18 @@ public abstract class LibraryItem {
         return id;
     }
 
-    public void checkoutItem() throws UnavailableLibraryItemError {
+    public void checkoutItem() throws UnavailableLibraryItemException {
         if(availability) {
             this.availability = false;
         }
         else {
-            throw new UnavailableLibraryItemError();
+            throw new UnavailableLibraryItemException();
         }
     }
 
-    public void returnItem() throws AvailableLibraryItemError {
+    public void returnItem() throws AvailableLibraryItemException {
         if (availability) {
-            throw new AvailableLibraryItemError();
+            throw new AvailableLibraryItemException();
         }
         else {
             this.availability = true;

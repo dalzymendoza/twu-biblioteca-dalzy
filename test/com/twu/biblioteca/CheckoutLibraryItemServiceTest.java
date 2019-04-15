@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.NonexistingLibraryItemError;
-import com.twu.biblioteca.errors.UnavailableLibraryItemError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemException;
+import com.twu.biblioteca.errors.UnavailableLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
 import com.twu.biblioteca.representations.Book;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
-public class CheckoutServiceTest {
+public class CheckoutLibraryItemServiceTest {
 
     @Captor
     public ArgumentCaptor<String> uiHandlerPrintUserActionResponseCaptor = ArgumentCaptor.forClass(String.class);
@@ -28,43 +28,43 @@ public class CheckoutServiceTest {
         LibraryService libraryServiceManager = mock(LibraryService.class);
         ViewLibraryItemService viewLibraryItemService = mock (ViewLibraryItemService.class);
 
-        CheckoutService checkoutService = new CheckoutService(serviceHandler, libraryServiceManager,
+        CheckoutLibraryItemService checkoutLibraryItemService = new CheckoutLibraryItemService(serviceHandler, libraryServiceManager,
                 viewLibraryItemService, libraryRepository);
-        checkoutService.checkoutLibraryItem(1);
+        checkoutLibraryItemService.checkoutLibraryItem(1);
         verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutService.SUCCESS));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutLibraryItemService.SUCCESS));
     }
 
     @Test
     public void shouldPrintNotAvailableIfCheckingOutUnavailableBook()
-            throws NonexistingLibraryItemError, UnavailableLibraryItemError {
+            throws NonexistingLibraryItemException, UnavailableLibraryItemException {
         LibraryRepository libraryRepository = mock(LibraryRepository.class);
-        doThrow(new UnavailableLibraryItemError()).when(libraryRepository).checkoutLibraryItem(anyInt());
+        doThrow(new UnavailableLibraryItemException()).when(libraryRepository).checkoutLibraryItem(anyInt());
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
         LibraryService libraryServiceManager = mock(LibraryService.class);
         ViewLibraryItemService viewLibraryItemService = mock (ViewLibraryItemService.class);
 
-        CheckoutService checkoutService = new CheckoutService(serviceHandler, libraryServiceManager,
+        CheckoutLibraryItemService checkoutLibraryItemService = new CheckoutLibraryItemService(serviceHandler, libraryServiceManager,
                 viewLibraryItemService, libraryRepository);
-        checkoutService.checkoutLibraryItem(1);
+        checkoutLibraryItemService.checkoutLibraryItem(1);
         verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutService.NOT_AVAILABLE_LIBRARY_ITEM));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutLibraryItemService.NOT_AVAILABLE_LIBRARY_ITEM));
     }
 
     @Test
     public void shouldPrintNonExistingBookIfCheckingOutWithNonexistingBookId()
-            throws NonexistingLibraryItemError, UnavailableLibraryItemError {
+            throws NonexistingLibraryItemException, UnavailableLibraryItemException {
         LibraryRepository libraryRepository = mock(LibraryRepository.class);
-        doThrow(new NonexistingLibraryItemError()).when(libraryRepository).checkoutLibraryItem(anyInt());
+        doThrow(new NonexistingLibraryItemException()).when(libraryRepository).checkoutLibraryItem(anyInt());
         ServiceHandler serviceHandler = mock(ServiceHandler.class);
         LibraryService libraryServiceManager = mock(LibraryService.class);
         ViewLibraryItemService viewLibraryItemService = mock (ViewLibraryItemService.class);
 
-        CheckoutService checkoutService = new CheckoutService(serviceHandler, libraryServiceManager,
+        CheckoutLibraryItemService checkoutLibraryItemService = new CheckoutLibraryItemService(serviceHandler, libraryServiceManager,
                 viewLibraryItemService, libraryRepository);
-        checkoutService.checkoutLibraryItem(1);
+        checkoutLibraryItemService.checkoutLibraryItem(1);
         verify(serviceHandler).printUserActionRespone(uiHandlerPrintUserActionResponseCaptor.capture());
-        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutService.NONEXISTING_LIBRARY_ITEM));
+        assertThat(uiHandlerPrintUserActionResponseCaptor.getValue(), containsString(CheckoutLibraryItemService.NONEXISTING_LIBRARY_ITEM));
     }
 
     private List<Book> generateTestListOf3Books() {

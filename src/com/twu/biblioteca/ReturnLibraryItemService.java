@@ -1,10 +1,10 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.AvailableLibraryItemError;
-import com.twu.biblioteca.errors.NonexistingLibraryItemError;
+import com.twu.biblioteca.errors.AvailableLibraryItemException;
+import com.twu.biblioteca.errors.NonexistingLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
 
-public class ReturnService extends Service {
+public class ReturnLibraryItemService extends Service {
 
     public static final String HEADER = "RETURN SERVICE";
 
@@ -16,7 +16,7 @@ public class ReturnService extends Service {
     private LibraryService libraryService;
 
 
-    public ReturnService(ServiceHandler serviceHandler, LibraryService libraryService, LibraryRepository libraryRepository) {
+    public ReturnLibraryItemService(ServiceHandler serviceHandler, LibraryService libraryService, LibraryRepository libraryRepository) {
         super(HEADER, serviceHandler);
         this.libraryService = libraryService;
         this.libraryRepository = libraryRepository;
@@ -58,10 +58,10 @@ public class ReturnService extends Service {
             libraryRepository.returnLibraryItem(id);
             serviceHandler.printUserActionRespone(SUCCESS);
         }
-        catch (NonexistingLibraryItemError e) {
+        catch (NonexistingLibraryItemException e) {
             serviceHandler.printUserActionRespone(NON_EXISTING_LIBRARY_ITEM);
         }
-        catch (AvailableLibraryItemError e) {
+        catch (AvailableLibraryItemException e) {
             serviceHandler.printUserActionRespone(ALREADY_AVAILABLE_LIBRARY_ITEM);
         }
     }

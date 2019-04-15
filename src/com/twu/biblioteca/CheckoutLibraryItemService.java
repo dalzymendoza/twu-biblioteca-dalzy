@@ -1,12 +1,12 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.NonexistingLibraryItemError;
-import com.twu.biblioteca.errors.UnavailableLibraryItemError;
+import com.twu.biblioteca.errors.NonexistingLibraryItemException;
+import com.twu.biblioteca.errors.UnavailableLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
 import com.twu.biblioteca.representations.LibraryItem;
 
 
-public class CheckoutService extends Service {
+public class CheckoutLibraryItemService extends Service {
 
     public static final String NOT_AVAILABLE_LIBRARY_ITEM = "Sorry, that library item is not available.";
     public static final String NONEXISTING_LIBRARY_ITEM = "Sorry, this library item does not exist.";
@@ -20,8 +20,8 @@ public class CheckoutService extends Service {
     private ServiceHandler serviceHandler;
     private LibraryItem libraryItem;
 
-    public CheckoutService(ServiceHandler serviceHandler, LibraryService libraryService,
-                           ViewLibraryItemService viewLibraryItemService, LibraryRepository libraryRepository) {
+    public CheckoutLibraryItemService(ServiceHandler serviceHandler, LibraryService libraryService,
+                                      ViewLibraryItemService viewLibraryItemService, LibraryRepository libraryRepository) {
         super(HEADER, serviceHandler);
         this.serviceHandler = serviceHandler;
         this.viewLibraryItemService = viewLibraryItemService;
@@ -69,10 +69,10 @@ public class CheckoutService extends Service {
             libraryRepository.checkoutLibraryItem(id);
             serviceHandler.printUserActionRespone(SUCCESS);
         }
-        catch (UnavailableLibraryItemError e) {
+        catch (UnavailableLibraryItemException e) {
             serviceHandler.printUserActionRespone(NOT_AVAILABLE_LIBRARY_ITEM);
         }
-        catch (NonexistingLibraryItemError e) {
+        catch (NonexistingLibraryItemException e) {
             serviceHandler.printUserActionRespone(NONEXISTING_LIBRARY_ITEM);
         }
     }

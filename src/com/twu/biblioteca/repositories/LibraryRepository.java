@@ -1,8 +1,8 @@
 package com.twu.biblioteca.repositories;
 
-import com.twu.biblioteca.errors.AvailableLibraryItemError;
-import com.twu.biblioteca.errors.NonexistingLibraryItemError;
-import com.twu.biblioteca.errors.UnavailableLibraryItemError;
+import com.twu.biblioteca.errors.AvailableLibraryItemException;
+import com.twu.biblioteca.errors.NonexistingLibraryItemException;
+import com.twu.biblioteca.errors.UnavailableLibraryItemException;
 import com.twu.biblioteca.representations.LibraryItem;
 
 import java.util.ArrayList;
@@ -26,27 +26,27 @@ public abstract class LibraryRepository {
         return new ArrayList<>(libraryItemMap.values());
     }
 
-    public void checkoutLibraryItem(int id) throws NonexistingLibraryItemError, UnavailableLibraryItemError {
+    public void checkoutLibraryItem(int id) throws NonexistingLibraryItemException, UnavailableLibraryItemException {
         if (libraryItemMap.containsKey(id)) {
             libraryItemMap.get(id).checkoutItem();
         }
         else {
-            throw new NonexistingLibraryItemError();
+            throw new NonexistingLibraryItemException();
         }
     }
 
-    public LibraryItem getLibraryItem(int id) throws NonexistingLibraryItemError {
+    public LibraryItem getLibraryItem(int id) throws NonexistingLibraryItemException {
         if (libraryItemMap.containsKey(id)) {
             return libraryItemMap.get(id);
         }
-        throw new NonexistingLibraryItemError();
+        throw new NonexistingLibraryItemException();
     }
 
-    public void returnLibraryItem(int id) throws NonexistingLibraryItemError, AvailableLibraryItemError {
+    public void returnLibraryItem(int id) throws NonexistingLibraryItemException, AvailableLibraryItemException {
         if (libraryItemMap.containsKey(id)) {
             LibraryItem libraryItem = libraryItemMap.get(id);
             if (libraryItem.getAvailability()) {
-                throw new AvailableLibraryItemError();
+                throw new AvailableLibraryItemException();
             }
             else {
                 libraryItem.returnItem();
@@ -54,7 +54,7 @@ public abstract class LibraryRepository {
 
         }
         else {
-            throw new NonexistingLibraryItemError();
+            throw new NonexistingLibraryItemException();
         }
     }
 

@@ -48,6 +48,12 @@ public class ServiceHandler {
         scanner.close();
     }
 
+    public String requestInput(String inputDescription) {
+        System.out.println(inputDescription + ": ");
+        String input = scanner.nextLine();
+        return input;
+    }
+
     public void printContent(String content) {
         System.out.println(content);
     }

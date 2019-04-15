@@ -7,7 +7,7 @@ public class ViewLibraryItemService extends Service {
 
     private LibraryItem libraryItem;
     private LibraryService libraryService;
-    private CheckoutService checkoutService;
+    private CheckoutLibraryItemService checkoutLibraryItemService;
     private ServiceHandler serviceHandler;
 
     public ViewLibraryItemService(ServiceHandler serviceHandler, LibraryService libraryService,
@@ -16,7 +16,7 @@ public class ViewLibraryItemService extends Service {
         this.serviceHandler = serviceHandler;
         this.libraryItem = libraryItem;
         this.libraryService = libraryService;
-        this.checkoutService = new CheckoutService(serviceHandler, libraryService,
+        this.checkoutLibraryItemService = new CheckoutLibraryItemService(serviceHandler, libraryService,
                                         this, libraryRepository);
     }
 
@@ -27,8 +27,8 @@ public class ViewLibraryItemService extends Service {
                 serviceHandler.setService(libraryService);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
             case "C":
-                serviceHandler.setService(checkoutService);
-                checkoutService.setLibraryItem(libraryItem);
+                serviceHandler.setService(checkoutLibraryItemService);
+                checkoutLibraryItemService.setLibraryItem(libraryItem);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
             default:
                 return ServiceHandler.InputProcessResponse.FAIL;
