@@ -13,11 +13,12 @@ public class Movie extends LibraryItem {
         super(id, title);
         this.director = director;
         this.yearReleased = yearReleased;
+        this.rating = rating;
     }
 
     @Override
     public String getExtraDetailsPrintFormat() {
-        return "Rating: " + rating+ "\n" +
+        return "Rating: " + rating + "\n" +
                "Year: " + yearReleased + "\n" +
                "Director: " + director + "\n";
     }

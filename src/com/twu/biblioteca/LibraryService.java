@@ -9,16 +9,17 @@ import java.util.List;
 
 public class LibraryService extends Service {
 
-    public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any books at the moment.\n";
+    public static final String NO_BOOKS_MESSAGE = "Sorry, we don't have any library items at the moment.\n";
 
     private LibraryRepository libraryRepository;
     private HomeService homeService;
     private ReturnService returnService;
 
-    public LibraryService(String header, HomeService homeService, ServiceHandler serviceHandler) {
+    public LibraryService(String header, HomeService homeService, ServiceHandler serviceHandler,
+                          LibraryRepository libraryRepository) {
         super(header, serviceHandler);
         this.homeService = homeService;
-        this.libraryRepository = new SampleBookLibraryRepository();
+        this.libraryRepository = libraryRepository;
         this.returnService = new ReturnService(serviceHandler, this, this.libraryRepository);
     }
 
@@ -57,8 +58,8 @@ public class LibraryService extends Service {
 
     private String getOptionsPrintFormat() {
         StringBuilder optionsPrintFormat = new StringBuilder();
-        optionsPrintFormat.append("[B] Back to Home screen\n");
-        optionsPrintFormat.append("[R] Return a book\n");
+        optionsPrintFormat.append("[B] Back to Home Screen\n");
+        optionsPrintFormat.append("[R] Return a Library Item\n");
         return optionsPrintFormat.toString();
     }
 

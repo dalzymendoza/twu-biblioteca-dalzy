@@ -2,7 +2,7 @@ package com.twu.biblioteca.representations;
 
 public class Rating {
     private int value;
-    public static final String PRINT_UNRATED = "Rating: Unrated";
+    public static final String PRINT_UNRATED = "Unrated";
 
     public Rating() {
         value = 0;
@@ -30,7 +30,7 @@ public class Rating {
         if(value < 1) {
             return PRINT_UNRATED;
         }
-        return "Rating: " + value;
+        return value + "";
     }
 
     private boolean isValidRatingValue(int value) {

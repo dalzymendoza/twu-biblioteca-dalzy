@@ -45,7 +45,7 @@ public class ViewLibraryItemService extends Service {
     private String getOptonsPrintFormat() {
         StringBuilder optionsPrintFormat = new StringBuilder();
         optionsPrintFormat.append("[C] Checkout this library item\n");
-        optionsPrintFormat.append("[B] Back to Books screen\n");
+        optionsPrintFormat.append("[B] Back to Library Screen\n");
         return optionsPrintFormat.toString();
     }
 
