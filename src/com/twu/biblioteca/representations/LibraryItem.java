@@ -1,7 +1,7 @@
 package com.twu.biblioteca.representations;
 
-import com.twu.biblioteca.errors.AvailableLibraryItemException;
-import com.twu.biblioteca.errors.UnavailableLibraryItemException;
+import com.twu.biblioteca.exceptions.AvailableLibraryItemException;
+import com.twu.biblioteca.exceptions.UnavailableLibraryItemException;
 
 public abstract class LibraryItem {
 

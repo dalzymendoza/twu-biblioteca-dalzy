@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.AvailableLibraryItemException;
-import com.twu.biblioteca.errors.NonexistingLibraryItemException;
+import com.twu.biblioteca.exceptions.AvailableLibraryItemException;
+import com.twu.biblioteca.exceptions.NonexistingLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

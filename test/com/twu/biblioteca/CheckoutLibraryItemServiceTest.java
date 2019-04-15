@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.errors.NonexistingLibraryItemException;
-import com.twu.biblioteca.errors.UnavailableLibraryItemException;
+import com.twu.biblioteca.exceptions.NonexistingLibraryItemException;
+import com.twu.biblioteca.exceptions.UnavailableLibraryItemException;
 import com.twu.biblioteca.repositories.LibraryRepository;
 import com.twu.biblioteca.representations.Book;
 import org.junit.Test;

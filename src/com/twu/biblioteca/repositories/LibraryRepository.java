@@ -1,8 +1,8 @@
 package com.twu.biblioteca.repositories;
 
-import com.twu.biblioteca.errors.AvailableLibraryItemException;
-import com.twu.biblioteca.errors.NonexistingLibraryItemException;
-import com.twu.biblioteca.errors.UnavailableLibraryItemException;
+import com.twu.biblioteca.exceptions.AvailableLibraryItemException;
+import com.twu.biblioteca.exceptions.NonexistingLibraryItemException;
+import com.twu.biblioteca.exceptions.UnavailableLibraryItemException;
 import com.twu.biblioteca.representations.LibraryItem;
 
 import java.util.ArrayList;

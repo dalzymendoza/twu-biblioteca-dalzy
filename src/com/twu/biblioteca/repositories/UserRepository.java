@@ -1,6 +1,6 @@
 package com.twu.biblioteca.repositories;
 
-import com.twu.biblioteca.errors.NoUserFoundException;
+import com.twu.biblioteca.exceptions.NoUserFoundException;
 import com.twu.biblioteca.representations.User;
 
 import java.util.HashMap;
