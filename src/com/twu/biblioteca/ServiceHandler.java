@@ -76,6 +76,16 @@ public class ServiceHandler {
         System.out.print(builder);
     }
 
+    public void printSubheader(String subheaderTitle){
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n" + subheaderTitle + "\n");
+        for (int i = 0; i < HEADER_WIDTH; i++) {
+            builder.append("-");
+        }
+        builder.append("\n");
+        System.out.print(builder);
+    }
+
     public void printUserActionRespone (String content) {
         System.out.println(RESPONSE_TO_USER_ACTION_BULLET + content + RESPONSE_TO_USER_ACTION_BULLET + "\n");
     }

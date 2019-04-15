@@ -37,6 +37,7 @@ public class CheckedOutAdminService extends Service {
     @Override
     public void displayStartScreen() {
         serviceHandler.printHeader(HEADER);
+        serviceHandler.printSubheader("Checked out items");
         serviceHandler.printContent(getCheckedOutLibraryItemsPrintFormat());
         serviceHandler.printContent(getOptonsPrintFormat());
     }
@@ -52,10 +53,10 @@ public class CheckedOutAdminService extends Service {
         if(libraryItems.size() == 0) {
             return NO_ITEMS_MESSAGE;
         }
-        StringBuilder allItemsPrintFormat = new StringBuilder("Checked out items: \n");
+        StringBuilder allItemsPrintFormat = new StringBuilder();
         for (LibraryItem libraryItem : libraryItems){
             if (!libraryItem.getAvailability()) {
-                allItemsPrintFormat.append(libraryItem.getAdminDetailsPrintFormat());
+                allItemsPrintFormat.append(libraryItem.getAdminDetailsPrintFormat() + "\nL");
             }
         }
         return allItemsPrintFormat.toString();
