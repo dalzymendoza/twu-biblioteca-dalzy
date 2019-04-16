@@ -1,5 +1,8 @@
-/* #1 Who checked out the book 'The Hobbit’ */
+/***************************************************************
+ * #1 Who checked out the book 'The Hobbit’ 
+ ***************************************************************/
 
+-- Query
 SELECT member.id, member.name 
 FROM member, book, checkout_item 
 WHERE member.id = checkout_item.member_id 
@@ -7,17 +10,28 @@ AND book.id = checkout_item.book_id
 AND book.title = "the hobbit" COLLATE NOCASE 
 ORDER BY member.id ASC;
 
-/* #2 How many people have not checked out anything? */
+-- Answer
+-- 1 | Anand Beck
 
-SELECT member.id, member.name 
+/***************************************************************
+ * #2 How many people have not checked out anything?
+ ***************************************************************/
+
+-- Query
+SELECT COUNT(*)
 FROM member 
-WHERE NOT EXISTS 
-	(SELECT * FROM checkout_item 
-	WHERE checkout_item.member_id = member.id)
-ORDER BY member.id ASC;
+WHERE member.id NOT IN 
+	(SELECT member_id FROM checkout_item 
+	WHERE checkout_item.member_id = member.id);
 
-/* #3 What books and movies aren't checked out? */
+-- Answer
+-- 37
 
+/***************************************************************
+ * #3 What books and movies aren't checked out?
+ ***************************************************************/
+
+-- Query
 SELECT "Book" AS item_type, book.id, book.title 
 FROM book
 WHERE NOT EXISTS (SELECT * FROM checkout_item WHERE checkout_item.book_id = book.id)
@@ -29,12 +43,26 @@ WHERE NOT EXISTS (SELECT * FROM checkout_item WHERE checkout_item.movie_id = mov
 
 ORDER BY item_type ASC;
 
-/* #4 Add the book 'The Pragmatic Programmer', and add yourself as a member. 
+-- Answer
+-- Book|2|Fellowship of the Ring
+-- Book|6|1984
+-- Book|7|Tom Sawyer
+-- Book|8|Catcher in the Rye
+-- Book|9|To Kill a Mockingbird
+-- Book|10|Domain Driven Design
+-- Movie|6|Thin Red Line
+-- Movie|7|Crouching Tiger, Hidden Dragon
+-- Movie|8|Lawrence of Arabia
+-- Movie|9|Office Space
+
+/***************************************************************
+ * #4 Add the book 'The Pragmatic Programmer', and add yourself as a member. 
  * Check out 'The Pragmatic Programmer'. 
  * Use your query from question 1 to verify that you have checked it out. 
  * Also, provide the SQL used to update the database. 
- */
+ ***************************************************************/
 
+-- Query
 INSERT INTO book (id, title) VALUES ("The Pragmatic Programmer");
 
 INSERT INTO member(id, name) VALUES ("Dalzy Mendoza");
@@ -52,9 +80,14 @@ AND book.id = checkout_item.book_id
 AND book.title = "the pragmatic programmer" COLLATE NOCASE 
 ORDER BY member.id ASC;
 
-/* #5 Who has checked out more than 1 item? 
- */
+-- Answer
+-- 43|Dalzy Mendoza
 
+/***************************************************************
+ * #5 Who has checked out more than 1 item? 
+ ***************************************************************/
+
+-- Query
 SELECT id, name
 FROM member
 WHERE id IN
@@ -63,3 +96,7 @@ WHERE id IN
 	GROUP BY member_id
 	HAVING COUNT(*) > 1)
 ORDER BY id ASC;
+
+-- Answer
+-- 1|Anand Beck
+-- 6|Frank Smith
