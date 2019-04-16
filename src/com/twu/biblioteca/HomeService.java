@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.repositories.SampleBookLibraryRepository;
 import com.twu.biblioteca.repositories.SampleMovieLibraryRepository;
+import com.twu.biblioteca.representations.User;
 
 public class HomeService extends Service {
 
@@ -29,6 +30,14 @@ public class HomeService extends Service {
             case "B":
                 serviceHandler.setService(userLogInService);
                 return ServiceHandler.InputProcessResponse.SUCCESS;
+            case "I":
+                User.UserPermissions userPermissions = serviceHandler.getCurrentUserPermissions();
+                if (userPermissions == User.UserPermissions.CUSTOMER) {
+                    serviceHandler.setService(new ViewUserDetailsService(serviceHandler,
+                            serviceHandler.getCurrentUser(), this));
+                    return ServiceHandler.InputProcessResponse.SUCCESS;
+                }
+                return ServiceHandler.InputProcessResponse.FAIL;
             default:
                 return ServiceHandler.InputProcessResponse.FAIL;
         }
@@ -47,6 +56,10 @@ public class HomeService extends Service {
         StringBuilder optionsPrintFormat = new StringBuilder();
         optionsPrintFormat.append("[BO] Books Library\n");
         optionsPrintFormat.append("[M] Movies Library\n");
+        User.UserPermissions userPermissions = serviceHandler.getCurrentUserPermissions();
+        if (userPermissions == User.UserPermissions.CUSTOMER) {
+            optionsPrintFormat.append("[I] View My Information\n");
+        }
         optionsPrintFormat.append("[B] Back to Login Screen\n");
         optionsPrintFormat.append("[Q] Quit application\n");
         return optionsPrintFormat.toString();

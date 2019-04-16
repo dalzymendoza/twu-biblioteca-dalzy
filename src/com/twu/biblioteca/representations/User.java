@@ -66,6 +66,16 @@ public class User {
         return EmailValidator.getInstance().isValid(email);
     }
 
+    public String getDetailsPrintFormat() {
+        StringBuilder details = new StringBuilder();
+        details.append("First Name: " + firstName + "\n");
+        details.append("Last Name: " + lastName + "\n");
+        details.append("Email: " + email + "\n");
+        details.append("Phone Number: " + phoneNumber.getCountryCode() +
+                phoneNumber.getNationalNumber() + "\n");
+        return details.toString();
+    }
+
     public String getUsername() {
         return username;
     }

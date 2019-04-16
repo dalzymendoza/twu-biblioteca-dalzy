@@ -4,7 +4,6 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.twu.biblioteca.exceptions.NoUserFoundException;
 import com.twu.biblioteca.representations.User;
 
-import javax.mail.internet.AddressException;
 import java.util.HashMap;
 import java.util.Map;
 
