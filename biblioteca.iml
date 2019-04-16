@@ -8,7 +8,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="junit-4.11" level="project" />
-    <orderEntry type="library" name="org.mockito:mockito-all:1.10.19" level="project" />
+    <orderEntry type="library" exported="" name="junit-4.11" level="project" />
+    <orderEntry type="library" exported="" name="org.mockito:mockito-all:1.10.19" level="project" />
+    <orderEntry type="library" name="com.jporm:jpo-commons-validator-api:8.6.8" level="project" />
+    <orderEntry type="library" exported="" name="com.googlecode.libphonenumber:libphonenumber:8.10.9" level="project" />
+    <orderEntry type="library" exported="" name="javax.mail:javax.mail-api:1.6.2" level="project" />
   </component>
 </module>
